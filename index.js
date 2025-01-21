@@ -205,7 +205,7 @@ const getUserConfig = async (filename, defaultConfig) => {
 const processJsonIcons = async (data, basePath = '.') => {
   if (Array.isArray(data)) {
     for (let i = 0; i < data.length; i++) {
-      data[i] = await processJsonIcons(data[i], basePath)
+      await processJsonIcons(data[i], basePath)
     }
   } else if (typeof data === 'object' && data !== null) {
     for (const key in data) {
@@ -222,7 +222,7 @@ const processJsonIcons = async (data, basePath = '.') => {
           data[key] = ''
         }
       } else {
-        data[key] = await processJsonIcons(data[key], basePath)
+        await processJsonIcons(data[key], basePath)
       }
     }
   }
@@ -234,24 +234,28 @@ const processJsonIcons = async (data, basePath = '.') => {
 const processJsonImages = async (data, basePath = '.') => {
   if (Array.isArray(data)) {
     for (let i = 0; i < data.length; i++) {
-      data[i] = await processJsonImages(data[i], basePath)
+      await processJsonImages(data[i], basePath)
     }
   } else if (typeof data === 'object' && data !== null) {
-    for (const key in data) {
-      if (data.hasOwnProperty(key)) {
-        if (data[key].path && data[key].type === 'image') {
-          let { path: imagePath, scale } = data[key]
-          imagePath = isAbsolute(imagePath)
-            ? imagePath
-            : resolve(join(basePath, imagePath))
-          try {
-            data[key].base64 = await imageToPngBase64(imagePath, scale)
-          } catch (error) {
-            console.warn(error.message)
-            data[key].base64 = ''
-          }
-        } else {
-          data[key] = await processJsonImages(data[key], basePath)
+    if (
+      data.hasOwnProperty('path') &&
+      data.hasOwnProperty('type') &&
+      data.type === 'image'
+    ) {
+      let { path: imagePath, scale } = data
+      imagePath = isAbsolute(imagePath)
+        ? imagePath
+        : resolve(join(basePath, imagePath))
+      try {
+        data.base64 = await imageToPngBase64(imagePath, scale)
+      } catch (error) {
+        console.warn(error.message)
+        data.base64 = ''
+      }
+    } else {
+      for (const key in data) {
+        if (data.hasOwnProperty(key)) {
+          await processJsonImages(data[key], basePath)
         }
       }
     }
