@@ -1,0 +1,280 @@
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8' />
+    <title>CV — {{data.name}}</title>
+    {{! prettier-ignore }}
+    <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      background: #f4f4f4;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+    .container {
+      width: 80%;
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #ffffff;
+      border-radius: 8px;
+    }
+
+    /* Header */
+    .header h1 {
+      font-size: 2em;
+      text-align: center;
+      margin: 0;
+      font-family: 'Georgia', serif;
+      color: #333;
+    }
+    .divider {
+      margin: 15px auto;
+      width: 60%;
+      border-bottom: 2px solid #555;
+    }
+
+    /* Contacts and structure */
+    .content {
+      display: flex;
+      flex-direction: row;
+      padding-top: 10px;
+    }
+    .sidebar {
+      width: 20%;
+      font-weight: bold;
+      color: #555;
+    }
+    .main {
+      width: 75%;
+    }
+
+    /* List styles */
+    ul {
+      margin: 0;
+      font-family: inherit;
+      color: inherit;
+      font-size: 1em;
+    }
+    li {
+      margin-bottom: 5px;
+      color: #333;
+    }
+
+    /* Grid for skills */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .skill-item {
+      background-color: #f1f1f1;
+      padding: 5px;
+      border-radius: 4px;
+      font-size: 1em;
+      text-align: center;
+      color: #333;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .contact-icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    .contact-item svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    @media print {
+      * {
+        page-break-inside: avoid;
+      }
+    }
+
+    @page {
+      size: A4;
+    }
+  </style>
+  </head>
+  <body>
+    <div class='container'>
+      <!-- Headline -->
+      <div class='header'>
+        <h1>{{data.name}}</h1>
+        <p>{{data.headline.backend-node-nest}}</p>
+        <div
+          style='display: flex; width: 100%; justify-content: center;'
+        >{{{image data.photo width='150px' height='150px' roundness=1}}}</div>
+        <div class='divider'></div>
+      </div>
+
+      <!-- Contacts -->
+      <div class='content'>
+        <div class='sidebar'>{{metadata.translations.contacts}}</div>
+        <div class='main'>
+          {{#each data.contacts}}
+            {{#if hidden}}{{else}}
+              <div class='contact-item'>
+                {{{icon}}}
+                {{#if markdown}}
+                  {{markdown value}}
+                {{else}}
+                  {{value}}
+                {{/if}}
+              </div>
+            {{/if}}
+          {{/each}}
+        </div>
+      </div>
+
+      <!-- Sections -->
+      {{#if data.about}}
+        <div class='content'>
+          <div class='sidebar'>{{metadata.translations.about}}</div>
+          <div class='main section-content'>
+            <p>{{markdown data.about}}</p>
+          </div>
+        </div>
+      {{/if}}
+
+      {{#if data.experience}}
+        <div class='content'>
+          <div class='sidebar'>{{metadata.translations.experience}}</div>
+          <div class='main section-content'>
+            {{#each data.experience}}
+              <div class='experience-item'>
+                <h3>{{name}} — {{headline}}</h3>
+                <p class='period'>{{date period.from}} — {{date period.to}}</p>
+                <p>{{about}}</p>
+                <h4>{{metadata.translations.responsibilities}}</h4>
+                <ul>
+                  {{#each responsibilities}}
+                    <li>{{this}}</li>
+                  {{/each}}
+                </ul>
+              </div>
+            {{/each}}
+          </div>
+        </div>
+      {{/if}}
+
+      {{#if data.education}}
+        <div class='content'>
+          <div class='sidebar'>{{metadata.translations.education}}</div>
+          <div class='main section-content'>
+            {{#each data.education}}
+              <div class='education-item'>
+                <h3>{{name}}</h3>
+                <h4>{{degree}} — {{faculty}}</h4>
+                <p class='period'>{{date period.from}} — {{date period.to}}</p>
+              </div>
+            {{/each}}
+          </div>
+        </div>
+      {{/if}}
+
+      <!-- Hard skills -->
+      {{#if data.skills.hard}}
+        <div class='content'>
+          <div class='sidebar'>{{metadata.translations.hardSkills}}</div>
+          <div class='main section-content'>
+            <div class='skills-grid'>
+              {{#each data.skills.hard}}
+                <div class='skill-item'>{{this}}</div>
+              {{/each}}
+            </div>
+          </div>
+        </div>
+      {{/if}}
+
+      <!-- Soft skills -->
+      {{#if data.skills.soft}}
+        <div class='content'>
+          <div class='sidebar'>{{metadata.translations.softSkills}}</div>
+          <div class='main section-content'>
+            <div class='skills-grid'>
+              {{#each data.skills.soft}}
+                <div class='skill-item'>{{this}}</div>
+              {{/each}}
+            </div>
+          </div>
+        </div>
+      {{/if}}
+
+      {{#if data.courses}}
+        <div class='content'>
+          <div class='sidebar'>{{metadata.translations.courses}}</div>
+          <div class='main section-content'>
+            {{#each data.courses}}
+              <div class='education-item'>
+                <h3>{{name}}</h3>
+                <h4>{{company}}</h4>
+                <p class='period'>{{date period.from}} — {{date period.to}}</p>
+                <p>{{about}}</p>
+              </div>
+            {{/each}}
+          </div>
+        </div>
+      {{/if}}
+
+      {{#if data.certificates}}
+        <div class='content'>
+          <div class='sidebar'>{{metadata.translations.certificates}}</div>
+          <div class='main section-content'>
+            {{#each data.certificates}}
+              <div class='education-item'>
+                <h3>{{name}}</h3>
+                <p class='period'>{{date issuedAt}}</p>
+              </div>
+            {{/each}}
+          </div>
+        </div>
+      {{/if}}
+
+      {{#if data.languages}}
+        <div class='content'>
+          <div class='sidebar'>{{metadata.translations.languages}}</div>
+          <div class='main section-content'>
+            {{#each data.languages}}
+              <div>
+                <ul>
+                  <li><strong>{{name}}</strong> — {{level}}</li>
+                </ul>
+              </div>
+            {{/each}}
+          </div>
+        </div>
+      {{/if}}
+
+      {{#if data.hobbies}}
+        <div class='content'>
+          <div class='sidebar'>{{metadata.translations.hobbies}}</div>
+          <div class='main section-content'>
+            {{#each data.hobbies}}
+              <div>
+                <ul>
+                  <li>{{this}}</li>
+                </ul>
+              </div>
+            {{/each}}
+          </div>
+        </div>
+      {{/if}}
+    </div>
+  </body>
+</html>

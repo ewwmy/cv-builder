@@ -1,0 +1,664 @@
+{
+  "metadata": {
+    "translations": {
+      "contacts": {
+        "ru": "Контакты",
+        "en": "Contacts"
+      },
+      "about": {
+        "ru": "Обо мне",
+        "en": "Professional Profile"
+      },
+      "experience": {
+        "ru": "Опыт работы",
+        "en": "Work Experience"
+      },
+      "hardSkills": {
+        "ru": "Навыки",
+        "en": "Hard Skills"
+      },
+      "softSkills": {
+        "ru": "Гибкие навыки",
+        "en": "Soft Skills"
+      },
+      "responsibilities": {
+        "ru": "Обязанности",
+        "en": "Responsibilities"
+      },
+      "education": {
+        "ru": "Образование",
+        "en": "Education"
+      },
+      "courses": {
+        "ru": "Курсы",
+        "en": "Courses"
+      },
+      "certificates": {
+        "ru": "Сертификаты",
+        "en": "Certificates"
+      },
+      "hobbies": {
+        "ru": "Хобби",
+        "en": "Interests"
+      },
+      "languages": {
+        "ru": "Знание языков",
+        "en": "Languages"
+      }
+    }
+  },
+  "data": {
+    "name": {
+      "en": "John Doe",
+      "ru": "Джон Доу"
+    },
+    "birthdate": "1990-12-31",
+    "headline": {
+      "backend-go": {
+        "ru": "Go backend разработчик",
+        "en": "Go Backend Developer"
+      },
+      "backend-rust": {
+        "ru": "Старший Rust backend разработчик",
+        "en": "Senior Rust Backend Developer"
+      },
+      "fullstack-node": {
+        "ru": "Fullstack Node.js разработчик",
+        "en": "Fullstack Node.js Developer"
+      }
+    },
+    "photo": {
+      "type": "image",
+      "scale": 1,
+      "path": "./images/example-user-photo.jpg"
+    },
+    "contacts": [
+      {
+        "type": "phone",
+        "icon": "./icons/phone.svg",
+        "value": "+0 (987) 654-32-10",
+        "markdown": true,
+        "hidden": true
+      },
+      {
+        "type": "email",
+        "icon": "./icons/at.svg",
+        "value": "johndoe-hidden@example.com",
+        "markdown": true,
+        "hidden": true
+      },
+      {
+        "type": "email",
+        "icon": "./icons/at.svg",
+        "value": "johndoe@example.com",
+        "markdown": true
+      },
+      {
+        "type": "phone",
+        "icon": "./icons/phone.svg",
+        "value": "+0 (123) 456-78-90",
+        "markdown": true
+      },
+      {
+        "type": "linkedin",
+        "icon": "./icons/linkedin-logo.svg",
+        "value": "https://www.example.com/",
+        "markdown": true
+      },
+      {
+        "type": "telegram",
+        "icon": "./icons/telegram-logo.svg",
+        "value": "[@johndoe](https://www.example.com/)",
+        "markdown": true
+      },
+      {
+        "type": "github",
+        "icon": "./icons/github-logo.svg",
+        "value": "[GitHub](https://www.example.com/)",
+        "markdown": true
+      }
+    ],
+    "salary": [
+      {
+        "currency": "USD",
+        "value": "5000"
+      },
+      {
+        "currency": "RUB",
+        "value": "500000"
+      }
+    ],
+    "time": ["full-time", "part-time"],
+    "type": ["remote", "project"],
+    "about": {
+      "ru": "Опытный разработчик с глубокими знаниями в **Node.js**, **Go** и **Rust**, специализирующийся на создании **масштабируемых**, **высоконагруженных** приложений и систем реального времени. Имеет опыт проектирования архитектуры **микросервисов**, оптимизации **производительности** и интеграции с распределенными системами. Освоил передовые подходы к разработке, включая **CI/CD**, контейнеризацию (**Docker**, **Kubernetes**) и облачные технологии (**AWS**, **GCP**). Придерживается принципов чистого кода и активно использует **TDD** и инструментальные средства для обеспечения качества. Уверенно работает с **базами данных** (**SQL** и **NoSQL**), а также имеет опыт разработки **REST** и **gRPC** API. Коммуникабельный и увлеченный профессионал, стремящийся решать сложные задачи и повышать производительность команд.",
+      "en": "Experienced developer with deep expertise in **Node.js**, **Go**, and **Rust**, specializing in building **scalable**, **high-load** applications and real-time systems. Proficient in designing **microservice** architectures, optimizing **performance**, and integrating with distributed systems. Skilled in modern development practices, including **CI/CD**, containerization (**Docker**, **Kubernetes**), and cloud technologies (**AWS**, **GCP**). Adheres to clean code principles and actively employs **TDD** and tooling for quality assurance. Strong background in **database management** (**SQL** and **NoSQL**) and developing **REST** and **gRPC** APIs. A communicative and passionate professional eager to tackle complex challenges and enhance team efficiency."
+    },
+    "skills": {
+      "hard": [
+        "Rust",
+        "Go",
+        "Node.js",
+        "JavaScript",
+        "TypeScript",
+        "REST API",
+        "gRPC",
+        "PostgreSQL",
+        "MySQL",
+        "MongoDB",
+        "Redis",
+        "Kafka",
+        "Docker",
+        "Kubernetes",
+        "CI/CD",
+        "AWS",
+        "GCP",
+        "TDD",
+        "Git",
+        "Linux"
+      ],
+      "soft": [
+        { "ru": "Критическое мышление", "en": "Critical thinking" },
+        { "ru": "Работа в команде", "en": "Teamwork" },
+        { "ru": "Навыки коммуникации", "en": "Communication skills" },
+        { "ru": "Тайм-менеджмент", "en": "Time management" },
+        { "ru": "Стремление к обучению", "en": "Willingness to learn" },
+        { "ru": "Решение проблем", "en": "Problem-solving" },
+        { "ru": "Внимание к деталям", "en": "Attention to detail" }
+      ]
+    },
+    "experience": [
+      {
+        "name": "TechNova Solutions",
+        "fullname": {
+          "ru": "Компания \"TechNova Solutions\"",
+          "en": "TechNova Solutions B.V."
+        },
+        "about": {
+          "ru": "Международная компания, специализирующаяся на облачных решениях и финтех-продуктах.",
+          "en": "An international company specializing in cloud solutions and fintech products."
+        },
+        "country": {
+          "ru": "Нидерланды",
+          "en": "Netherlands"
+        },
+        "city": {
+          "ru": "Амстердам",
+          "en": "Amsterdam"
+        },
+        "website": "https://example.com/technova",
+        "period": {
+          "from": "2021-06-01",
+          "to": "2025-01-01"
+        },
+        "headline": {
+          "ru": "Старший разработчик Node.js/Go",
+          "en": "Senior Node.js/Go Developer"
+        },
+        "type": "remote",
+        "time": "full-time",
+        "responsibilities": [
+          {
+            "ru": "Разработка микросервисной архитектуры для высоконагруженных систем",
+            "en": "Developed microservice architecture for high-load systems"
+          },
+          {
+            "ru": "Интеграция с внешними API для обработки транзакций",
+            "en": "Integrated external APIs for transaction processing"
+          },
+          {
+            "ru": "Настройка CI/CD для автоматизации разработки и развертывания",
+            "en": "Configured CI/CD pipelines for development and deployment automation"
+          },
+          {
+            "ru": "Оптимизация производительности систем и баз данных",
+            "en": "Optimized system and database performance"
+          }
+        ],
+        "achievements": [
+          {
+            "ru": "Разработал микросервисную архитектуру, увеличив производительность платежной системы на 30%",
+            "en": "Designed a microservice architecture, increasing payment system performance by 30%"
+          },
+          {
+            "ru": "Уменьшил среднее время отклика API на 40% за счет оптимизации ключевых модулей",
+            "en": "Reduced API response time by 40% through key module optimization"
+          },
+          {
+            "ru": "Сократил время выхода новых версий на 20% благодаря внедрению CI/CD процессов",
+            "en": "Decreased release time by 20% with CI/CD process implementation"
+          }
+        ],
+        "stack": [
+          "Node.js",
+          "Go",
+          "REST API",
+          "gRPC",
+          "PostgreSQL",
+          "Redis",
+          "Docker",
+          "Kubernetes",
+          "AWS"
+        ],
+        "projects": [
+          {
+            "name": "PaymentFlow",
+            "fullname": {
+              "ru": "Платформа PaymentFlow",
+              "en": "PaymentFlow Platform"
+            },
+            "about": {
+              "ru": "Платформа для обработки онлайн-платежей с микросервисной архитектурой.",
+              "en": "A platform for processing online payments with a microservice architecture."
+            },
+            "role": {
+              "ru": "Бекенд разработчик Node.js/Go",
+              "en": "Node.js/Go Backend Developer"
+            },
+            "from": "2021-06-01",
+            "to": "2022-12-01",
+            "responsibilities": [
+              {
+                "ru": "Разработка микросервисной архитектуры для обработки транзакций",
+                "en": "Designed a microservice architecture for transaction processing"
+              },
+              {
+                "ru": "Интеграция с внешними API платежных систем",
+                "en": "Integrated external payment system APIs"
+              },
+              {
+                "ru": "Настройка CI/CD процессов для автоматического развертывания и тестирования",
+                "en": "Configured CI/CD pipelines for automated deployment and testing"
+              }
+            ],
+            "achievements": [
+              {
+                "ru": "Повысил производительность системы обработки платежей на 30%",
+                "en": "Increased payment processing system performance by 30%"
+              },
+              {
+                "ru": "Уменьшил среднее время отклика API на 40% за счет оптимизации кода и базы данных",
+                "en": "Reduced API response time by 40% through code and database optimization"
+              }
+            ],
+            "stack": [
+              "Node.js",
+              "Go",
+              "PostgreSQL",
+              "Docker",
+              "Kubernetes",
+              "REST API",
+              "AWS"
+            ],
+            "fromScratch": true,
+            "completed": true
+          },
+          {
+            "name": { "ru": "Мониторинг InsightLogger", "en": "InsightLogger" },
+            "fullname": {
+              "ru": "Система мониторинга InsightLogger",
+              "en": "Monitoring system InsightLogger"
+            },
+            "about": {
+              "ru": "Система мониторинга и логирования для высоконагруженных приложений",
+              "en": "A monitoring and logging system for high-load applications"
+            },
+            "role": {
+              "ru": "Разработчик Rust",
+              "en": "Rust Developer"
+            },
+            "from": "2023-01-01",
+            "to": "2023-07-01",
+            "responsibilities": [
+              {
+                "ru": "Разработка архитектуры логирования с использованием Kafka и Rust",
+                "en": "Designed a logging architecture using Kafka and Rust"
+              },
+              {
+                "ru": "Настройка дашбордов с метриками в Grafana и Prometheus",
+                "en": "Set up dashboards with metrics in Grafana and Prometheus"
+              },
+              {
+                "ru": "Оптимизация хранилища логов для минимизации затрат на хранение",
+                "en": "Optimized log storage to minimize storage costs"
+              }
+            ],
+            "achievements": [
+              {
+                "ru": "Сократил время анализа ошибок на 50% благодаря улучшенной визуализации логов",
+                "en": "Reduced error analysis time by 50% with improved log visualization"
+              },
+              {
+                "ru": "Оптимизировал использование ресурсов на 20%, уменьшив расходы на облако",
+                "en": "Optimized resource usage by 20%, lowering cloud expenses"
+              }
+            ],
+            "stack": [
+              "Rust",
+              "Kafka",
+              "Prometheus",
+              "Grafana",
+              "Docker",
+              "Kubernetes",
+              "GCP"
+            ],
+            "fromScratch": true,
+            "completed": true
+          },
+          {
+            "name": {
+              "ru": "Проект DynamicOfferEngine",
+              "en": "DynamicOfferEngine"
+            },
+            "fullname": {
+              "ru": "DynamicOfferEngine Pricing Software",
+              "en": "Сервис DynamicOfferEngine"
+            },
+            "about": {
+              "ru": "Сервис для динамического расчета цен и предоставления персонализированных предложений.",
+              "en": "A service for dynamic pricing and personalized offers"
+            },
+            "role": {
+              "ru": "Разработчик Go",
+              "en": "Go Developer"
+            },
+            "from": "2023-08-01",
+            "to": "2025-01-01",
+            "responsibilities": [
+              {
+                "ru": "Разработка алгоритмов динамического ценообразования",
+                "en": "Developed dynamic pricing algorithms"
+              },
+              {
+                "ru": "Создание gRPC API для быстрой интеграции с внешними системами",
+                "en": "Created gRPC APIs for seamless external system integration"
+              },
+              {
+                "ru": "Оптимизация кода для высокой производительности при большом объеме запросов",
+                "en": "Optimized code for high performance under heavy request loads"
+              }
+            ],
+            "achievements": [
+              {
+                "ru": "Сократил задержки при расчете цен на 25% за счет оптимизации алгоритмов",
+                "en": "Reduced pricing calculation delays by 25% through algorithm optimization"
+              },
+              {
+                "ru": "Обеспечил бесперебойную работу сервиса при нагрузке до 5000 RPS",
+                "en": "Ensured stable service operation under loads of up to 5000 RPS"
+              }
+            ],
+            "stack": ["Go", "gRPC", "Redis", "PostgreSQL", "Kubernetes", "AWS"],
+            "fromScratch": true,
+            "completed": true
+          }
+        ]
+      },
+      {
+        "name": {
+          "ru": "Компания \"CodeForge Labs\"",
+          "en": "CodeForge Labs"
+        },
+        "about": {
+          "ru": "Стартап, занимающийся разработкой платформ для обработки больших данных и IoT-решений",
+          "en": "A startup developing platforms for big data processing and IoT solutions"
+        },
+        "country": {
+          "ru": "Польша",
+          "en": "Poland"
+        },
+        "city": {
+          "ru": "Варшава",
+          "en": "Warsaw"
+        },
+        "website": "https://example.com/codeforge",
+        "period": {
+          "from": "2018-02-01",
+          "to": "2021-05-01"
+        },
+        "headline": {
+          "ru": "Разработчик Rust/Go",
+          "en": "Rust/Go Developer"
+        },
+        "type": "on-site",
+        "time": "full-time",
+        "responsibilities": [
+          {
+            "ru": "Создание и оптимизация систем обработки больших данных",
+            "en": "Built and optimized big data processing systems"
+          },
+          {
+            "ru": "Разработка потоковой обработки данных с использованием Kafka",
+            "en": "Developed stream processing using Kafka"
+          },
+          {
+            "ru": "Внедрение архитектуры контейнеризации для повышения масштабируемости",
+            "en": "Implemented containerized architecture to enhance scalability"
+          },
+          {
+            "ru": "Оптимизация алгоритмов работы с большими объемами данных",
+            "en": "Optimized algorithms for handling large datasets"
+          }
+        ],
+        "achievements": [
+          {
+            "ru": "Создал систему, обрабатывающую до 1 млн событий в минуту",
+            "en": "Created a system capable of processing up to 1 million events per minute"
+          },
+          {
+            "ru": "Повысил надежность системы за счет внедрения потоковой обработки данных",
+            "en": "Improved system reliability by implementing stream data processing"
+          },
+          {
+            "ru": "Уменьшил использование ресурсов на 25% благодаря оптимизации алгоритмов",
+            "en": "Reduced resource usage by 25% through algorithm optimization"
+          }
+        ],
+        "stack": [
+          "Rust",
+          "Go",
+          "Kafka",
+          "Prometheus",
+          "Grafana",
+          "Docker",
+          "Kubernetes",
+          "GCP"
+        ],
+        "projects": []
+      },
+      {
+        "name": "Digital Orbit",
+        "about": {
+          "ru": "Компания-разработчик веб-приложений для электронной коммерции",
+          "en": "A company developing web applications for e-commerce"
+        },
+        "country": {
+          "ru": "Италия",
+          "en": "Italy"
+        },
+        "city": {
+          "ru": "Неаполь",
+          "en": "Naples"
+        },
+        "website": "https://example.com/digital-orbit",
+        "period": {
+          "from": "2016-07-01",
+          "to": "2018-01-01"
+        },
+        "headline": {
+          "ru": "Младший Node.js разработчик",
+          "en": "Junior Node.js Developer"
+        },
+        "type": "on-site",
+        "time": "full-time",
+        "responsibilities": [
+          {
+            "ru": "Разработка API для электронной коммерции",
+            "en": "Developed APIs for e-commerce platforms"
+          },
+          {
+            "ru": "Настройка мониторинга и логирования приложений",
+            "en": "Set up application monitoring and logging"
+          },
+          {
+            "ru": "Обновление схем баз данных для повышения производительности",
+            "en": "Updated database schemas to improve performance"
+          },
+          {
+            "ru": "Устранение ошибок и улучшение производительности приложений",
+            "en": "Fixed bugs and enhanced application performance"
+          }
+        ],
+        "achievements": [
+          {
+            "ru": "Снизил время устранения ошибок на 50% благодаря улучшенной системе логирования",
+            "en": "Reduced error resolution time by 50% with improved logging systems"
+          },
+          {
+            "ru": "Увеличил производительность запросов базы данных на 15%",
+            "en": "Increased database query performance by 15%"
+          }
+        ],
+        "stack": [
+          "Node.js",
+          "JavaScript",
+          "TypeScript",
+          "MongoDB",
+          "MySQL",
+          "Git",
+          "Jenkins",
+          "Linux"
+        ],
+        "projects": []
+      }
+    ],
+    "education": [
+      {
+        "name": {
+          "ru": "Национальный исследовательский университет ИТМО",
+          "en": "ITMO University"
+        },
+        "coutry": {
+          "ru": "Россия",
+          "en": "Russia"
+        },
+        "city": {
+          "ru": "Санкт-Петербург",
+          "en": "Saint Petersburg"
+        },
+        "period": {
+          "from": "2016-09-01",
+          "to": "2018-01-01"
+        },
+        "faculty": {
+          "ru": "Программная инженерия",
+          "en": "Software Engineering"
+        },
+        "degree": {
+          "ru": "Магистр",
+          "en": "Master's Degree"
+        }
+      },
+      {
+        "name": {
+          "ru": "Московский государственный технический университет (МГТУ)",
+          "en": "Moscow State Technical University (MSTU)"
+        },
+        "coutry": {
+          "ru": "Россия",
+          "en": "Russia"
+        },
+        "city": {
+          "ru": "Москва",
+          "en": "Moscow"
+        },
+        "period": {
+          "from": "2012-09-01",
+          "to": "2016-06-01"
+        },
+        "faculty": {
+          "ru": "Информатика и вычислительная техника",
+          "en": "Computer Science and Engineering"
+        },
+        "degree": {
+          "ru": "Бакалавр",
+          "en": "Bachelor's Degree"
+        }
+      }
+    ],
+    "courses": [
+      {
+        "name": "Go: Advanced Server Programming",
+        "company": "Coursera",
+        "about": {
+          "ru": "Онлайн-курс по разработке серверных приложений на Go",
+          "en": "Online course on server application development with Go"
+        },
+        "period": {
+          "from": "2020-05-01",
+          "to": "2020-07-01"
+        }
+      }
+    ],
+    "certificates": [
+      {
+        "name": "AWS Certified Solutions Architect – Associate",
+        "issuedAt": "2022-06-01"
+      },
+      {
+        "name": "Certified Kubernetes Administrator (CKA)",
+        "issuedAt": "2021-06-01"
+      }
+    ],
+    "hobbies": [
+      {
+        "ru": "Разработка open-source проектов",
+        "en": "Developing open-source projects"
+      },
+      {
+        "ru": "Решение алгоритмических задач",
+        "en": "Solving algorithmic problems"
+      },
+      {
+        "ru": "Чтение технической литературы",
+        "en": "Reading technical literature"
+      },
+      {
+        "ru": "Велоспорт",
+        "en": "Cycling"
+      }
+    ],
+    "languages": [
+      {
+        "name": {
+          "ru": "Русский",
+          "en": "Russian"
+        },
+        "level": {
+          "ru": "Родной",
+          "en": "Native"
+        }
+      },
+      {
+        "name": {
+          "ru": "Английский",
+          "en": "English"
+        },
+        "level": {
+          "ru": "Уровень C1 (Advanced)",
+          "en": "C1 (Advanced)"
+        }
+      },
+      {
+        "name": {
+          "ru": "Немецкий",
+          "en": "German"
+        },
+        "level": {
+          "ru": "Уровень B1 (Intermediate)",
+          "en": "B1 (Intermediate)"
+        }
+      }
+    ]
+  }
+}
