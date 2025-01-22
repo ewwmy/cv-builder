@@ -204,27 +204,27 @@ const getUserConfig = async (filename, defaultConfig) => {
 // process icons in json
 const processJsonIcons = async (data, basePath = '.') => {
   if (Array.isArray(data)) {
-    for (let i = 0; i < data.length; i++) {
-      await processJsonIcons(data[i], basePath)
-    }
+    await Promise.all(data.map((item) => processJsonIcons(item, basePath)))
   } else if (typeof data === 'object' && data !== null) {
-    for (const key in data) {
-      if (key === 'icon') {
-        const path = isAbsolute(data[key])
-          ? data[key]
-          : resolve(join(basePath, data[key]))
-        try {
-          data[key] = await readFileData(path)
-        } catch (error) {
-          console.warn(
-            `Warning: Couldn't load the icon on "${path}". The icon will be ignored.`,
-          )
-          data[key] = ''
+    await Promise.all(
+      Object.keys(data).map(async (key) => {
+        if (key === 'icon') {
+          const path = isAbsolute(data[key])
+            ? data[key]
+            : resolve(join(basePath, data[key]))
+          try {
+            data[key] = await readFileData(path)
+          } catch (error) {
+            console.warn(
+              `Warning: Couldn't load the icon on "${path}". The icon will be ignored.`,
+            )
+            data[key] = ''
+          }
+        } else {
+          await processJsonIcons(data[key], basePath)
         }
-      } else {
-        await processJsonIcons(data[key], basePath)
-      }
-    }
+      }),
+    )
   }
   return data
 }
@@ -233,9 +233,7 @@ const processJsonIcons = async (data, basePath = '.') => {
 // { type: "image"; path: string; scale?: number } to { type: "image"; path: string; scale?: number; base64: string }
 const processJsonImages = async (data, basePath = '.') => {
   if (Array.isArray(data)) {
-    for (let i = 0; i < data.length; i++) {
-      await processJsonImages(data[i], basePath)
-    }
+    await Promise.all(data.map((item) => processJsonImages(item, basePath)))
   } else if (typeof data === 'object' && data !== null) {
     if (
       data.hasOwnProperty('path') &&
@@ -253,11 +251,11 @@ const processJsonImages = async (data, basePath = '.') => {
         data.base64 = ''
       }
     } else {
-      for (const key in data) {
-        if (data.hasOwnProperty(key)) {
-          await processJsonImages(data[key], basePath)
-        }
-      }
+      await Promise.all(
+        Object.keys(data).map(
+          async (key) => await processJsonImages(data[key], basePath),
+        ),
+      )
     }
   }
   return data
