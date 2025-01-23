@@ -94,6 +94,7 @@ const checkAppDir = async (appConfig) => {
 // restore default settings and examples
 const restoreDefault = async (appConfig, force = false) => {
   await fsx.ensureDir(appConfig.APP_DIR)
+  await fsx.ensureDir(appConfig.DEFAULT_OUTPUT_DIR)
 
   // restore config
   if (!(await fsx.pathExists(appConfig.CONFIG_FILE_PATH)) || force) {
@@ -116,7 +117,7 @@ const restoreDefault = async (appConfig, force = false) => {
     await fsx.copy(appConfig.EXAMPLE_ICONS_DIR, appConfig.DEFAULT_ICONS_DIR)
   }
 
-  // restore user photo example
+  // restore user photo examples
   if (!(await fsx.pathExists(appConfig.DEFAULT_IMAGES_DIR)) || force) {
     await fsx.copy(appConfig.EXAMPLE_IMAGES_DIR, appConfig.DEFAULT_IMAGES_DIR)
   }
