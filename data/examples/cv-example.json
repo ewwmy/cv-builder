@@ -52,7 +52,7 @@
       "en": "John Doe",
       "ru": "Джон Доу"
     },
-    "birthdate": "1990-12-31",
+    "birthdate": "1985-12-31",
     "headline": {
       "backend-go": {
         "ru": "Go backend разработчик",
@@ -70,50 +70,50 @@
     "photo": {
       "type": "image",
       "scale": 1,
-      "path": "./images/example-user-photo.jpg"
+      "path": "example-user-photo.jpg"
     },
     "contacts": [
       {
         "type": "phone",
-        "icon": "./icons/phone.svg",
+        "icon": "phone.svg",
         "value": "+0 (987) 654-32-10",
         "markdown": true,
         "hidden": true
       },
       {
         "type": "email",
-        "icon": "./icons/at.svg",
+        "icon": "at.svg",
         "value": "johndoe-hidden@example.com",
         "markdown": true,
         "hidden": true
       },
       {
         "type": "email",
-        "icon": "./icons/at.svg",
+        "icon": "at.svg",
         "value": "johndoe@example.com",
         "markdown": true
       },
       {
         "type": "phone",
-        "icon": "./icons/phone.svg",
+        "icon": "phone.svg",
         "value": "+0 (123) 456-78-90",
         "markdown": true
       },
       {
         "type": "linkedin",
-        "icon": "./icons/linkedin-logo.svg",
+        "icon": "linkedin-logo.svg",
         "value": "https://www.example.com/",
         "markdown": true
       },
       {
         "type": "telegram",
-        "icon": "./icons/telegram-logo.svg",
+        "icon": "telegram-logo.svg",
         "value": "[@johndoe](https://www.example.com/)",
         "markdown": true
       },
       {
         "type": "github",
-        "icon": "./icons/github-logo.svg",
+        "icon": "github-logo.svg",
         "value": "[GitHub](https://www.example.com/)",
         "markdown": true
       }
