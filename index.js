@@ -56,7 +56,7 @@ const initializeAppConfig = (appConfig) => {
   )
 
   appConfig.DEFAULT_USER_CONFIG = {
-    LOCALES: ['en-US'],
+    LOCALES: ['en-US', 'ru-RU'],
     TEMPLATES: ['example'],
     INPUT_CV_FILE_PATH: appConfig.DEFAULT_CV_FILE_PATH,
     OUTPUT_DIR: appConfig.DEFAULT_OUTPUT_DIR,
@@ -252,9 +252,7 @@ const processJsonImages = async (data, basePath = '.') => {
       }
     } else {
       await Promise.all(
-        Object.keys(data).map(
-          async (key) => await processJsonImages(data[key], basePath),
-        ),
+        Object.keys(data).map((key) => processJsonImages(data[key], basePath)),
       )
     }
   }
