@@ -16,8 +16,9 @@ const initializeAppConfig = (appConfig) => {
   appConfig.APP_GROUP_NAME = 'ewwmy'
   appConfig.APP_NAME = 'cv-builder'
   appConfig.EXAMPLE_CV = 'cv-example.json'
-  appConfig.EXAMPLE_IMAGE = 'example-user-photo.jpg'
-  appConfig.EXAMPLE_TEMPLATE = 'example'
+  appConfig.EXAMPLE_IMAGES = 'images'
+  appConfig.EXAMPLE_ICONS = 'icons'
+  appConfig.EXAMPLE_TEMPLATES = 'templates'
 
   appConfig.APP_DIR = resolve(
     join(homedir(), '.config', appConfig.APP_GROUP_NAME, appConfig.APP_NAME),
@@ -28,32 +29,34 @@ const initializeAppConfig = (appConfig) => {
     join(appConfig.CONFIG_DIR, 'settings.json'),
   )
 
-  appConfig.EXAMPLES_PATH = resolve(join('.', 'data', 'examples'))
-  appConfig.EXAMPLE_CV_PATH = resolve(
-    join(appConfig.EXAMPLES_PATH, appConfig.EXAMPLE_CV),
+  appConfig.EXAMPLES_DIR = resolve(join('.', 'data', 'examples'))
+
+  appConfig.EXAMPLE_CV_FILE_PATH = resolve(
+    join(appConfig.EXAMPLES_DIR, appConfig.EXAMPLE_CV),
   )
-  appConfig.EXAMPLE_IMAGE_PATH = resolve(
-    join(appConfig.EXAMPLES_PATH, appConfig.EXAMPLE_IMAGE),
+  appConfig.EXAMPLE_IMAGES_DIR = resolve(
+    join(appConfig.EXAMPLES_DIR, appConfig.EXAMPLE_IMAGES),
   )
-  appConfig.EXAMPLE_ICONS_PATH = resolve(join(appConfig.EXAMPLES_PATH, 'icons'))
-  appConfig.EXAMPLE_TEMPLATE_PATH = resolve(
-    join(appConfig.EXAMPLES_PATH, `${appConfig.EXAMPLE_TEMPLATE}.hbs`),
+  appConfig.EXAMPLE_ICONS_DIR = resolve(
+    join(appConfig.EXAMPLES_DIR, appConfig.EXAMPLE_ICONS),
+  )
+  appConfig.EXAMPLE_TEMPLATES_DIR = resolve(
+    join(appConfig.EXAMPLES_DIR, appConfig.EXAMPLE_TEMPLATES),
   )
 
   appConfig.DEFAULT_CV_FILE_PATH = resolve(
     join(appConfig.APP_DIR, appConfig.EXAMPLE_CV),
   )
-  appConfig.DEFAULT_IMAGE_PATH = resolve(
-    join(appConfig.APP_DIR, 'images', appConfig.EXAMPLE_IMAGE),
+  appConfig.DEFAULT_IMAGES_DIR = resolve(
+    join(appConfig.APP_DIR, appConfig.EXAMPLE_IMAGES),
   )
-  appConfig.DEFAULT_ICONS_PATH = resolve(join(appConfig.APP_DIR, 'icons'))
-  appConfig.DEFAULT_OUTPUT_DIR = resolve(join(appConfig.APP_DIR, 'out'))
+  appConfig.DEFAULT_ICONS_DIR = resolve(
+    join(appConfig.APP_DIR, appConfig.EXAMPLE_ICONS),
+  )
   appConfig.DEFAULT_TEMPLATES_DIR = resolve(
-    join(appConfig.APP_DIR, 'templates'),
+    join(appConfig.APP_DIR, appConfig.EXAMPLE_TEMPLATES),
   )
-  appConfig.DEFAULT_TEMPLATE_PATH = resolve(
-    join(appConfig.DEFAULT_TEMPLATES_DIR, `${appConfig.EXAMPLE_TEMPLATE}.hbs`),
-  )
+  appConfig.DEFAULT_OUTPUT_DIR = resolve(join(appConfig.APP_DIR, 'out'))
 
   appConfig.DEFAULT_USER_CONFIG = {
     LOCALES: ['en-US', 'ru-RU'],
@@ -61,6 +64,8 @@ const initializeAppConfig = (appConfig) => {
     INPUT_CV_FILE_PATH: appConfig.DEFAULT_CV_FILE_PATH,
     OUTPUT_DIR: appConfig.DEFAULT_OUTPUT_DIR,
     TEMPLATES_DIR: appConfig.DEFAULT_TEMPLATES_DIR,
+    BASE_IMAGES_DIR: appConfig.DEFAULT_IMAGES_DIR,
+    BASE_ICONS_DIR: appConfig.DEFAULT_ICONS_DIR,
   }
 }
 
@@ -89,8 +94,6 @@ const checkAppDir = async (appConfig) => {
 // restore default settings and examples
 const restoreDefault = async (appConfig, force = false) => {
   await fsx.ensureDir(appConfig.APP_DIR)
-  await fsx.ensureDir(appConfig.DEFAULT_OUTPUT_DIR)
-  await fsx.ensureDir(appConfig.DEFAULT_TEMPLATES_DIR)
 
   // restore config
   if (!(await fsx.pathExists(appConfig.CONFIG_FILE_PATH)) || force) {
@@ -102,24 +105,27 @@ const restoreDefault = async (appConfig, force = false) => {
 
   // restore cv example
   if (!(await fsx.pathExists(appConfig.DEFAULT_CV_FILE_PATH)) || force) {
-    await fsx.copy(appConfig.EXAMPLE_CV_PATH, appConfig.DEFAULT_CV_FILE_PATH)
+    await fsx.copy(
+      appConfig.EXAMPLE_CV_FILE_PATH,
+      appConfig.DEFAULT_CV_FILE_PATH,
+    )
   }
 
   // restore icons
-  if (!(await fsx.pathExists(appConfig.DEFAULT_ICONS_PATH)) || force) {
-    await fsx.copy(appConfig.EXAMPLE_ICONS_PATH, appConfig.DEFAULT_ICONS_PATH)
+  if (!(await fsx.pathExists(appConfig.DEFAULT_ICONS_DIR)) || force) {
+    await fsx.copy(appConfig.EXAMPLE_ICONS_DIR, appConfig.DEFAULT_ICONS_DIR)
   }
 
   // restore user photo example
-  if (!(await fsx.pathExists(appConfig.DEFAULT_IMAGE_PATH)) || force) {
-    await fsx.copy(appConfig.EXAMPLE_IMAGE_PATH, appConfig.DEFAULT_IMAGE_PATH)
+  if (!(await fsx.pathExists(appConfig.DEFAULT_IMAGES_DIR)) || force) {
+    await fsx.copy(appConfig.EXAMPLE_IMAGES_DIR, appConfig.DEFAULT_IMAGES_DIR)
   }
 
   // restore template examples
-  if (!(await fsx.pathExists(appConfig.DEFAULT_TEMPLATE_PATH)) || force) {
+  if (!(await fsx.pathExists(appConfig.DEFAULT_TEMPLATES_DIR)) || force) {
     await fsx.copy(
-      appConfig.EXAMPLE_TEMPLATE_PATH,
-      appConfig.DEFAULT_TEMPLATE_PATH,
+      appConfig.EXAMPLE_TEMPLATES_DIR,
+      appConfig.DEFAULT_TEMPLATES_DIR,
     )
   }
 }
@@ -150,24 +156,37 @@ const getCommandLineOptions = async (userConfig) => {
         alias: 'o',
         describe: 'Path to the output folder',
         default: userConfig.OUTPUT_DIR,
+        type: 'string',
       },
-      templatesDir: {
+      'templates-dir': {
         alias: 'd',
         describe: 'Path to the templates folder',
         default: userConfig.TEMPLATES_DIR,
         type: 'string',
       },
+      'images-base-dir': {
+        describe:
+          'Base path for the images that are supposed to be used in a template',
+        default: userConfig.BASE_IMAGES_DIR,
+        type: 'string',
+      },
+      'icons-base-dir': {
+        describe:
+          'Base path for the icons that are supposed to be used in a template',
+        default: userConfig.BASE_ICONS_DIR,
+        type: 'string',
+      },
       margins: {
         alias: 'm',
         describe:
-          'Margins of the output PDF [top]:[right]:[bottom]:[left].  Examples: --margins=2cm:0cm:1cm:1cm | --margins=:1cm::1cm | --margins=0px:24px:0px:24px',
+          'Margins of the output PDF [top]:[right]:[bottom]:[left]. Examples: --margins=2cm:0cm:1cm:1cm | --margins=:1cm::1cm | --margins=0px:24px:0px:24px',
         usage: '2cm:1cm:1cm:0cm',
         type: 'string',
       },
       restore: {
         alias: 'r',
         describe:
-          'Restore sample data, preserving existing files            !!! CAUTION: If the `--force` option given, existing      configuration, CV file `cv-example.json`, template        `example.hbs`, image `example-user-photo.jpg` WILL BE     OVERWRITTEN !!!',
+          'Restore sample data, preserving existing files !!! CAUTION: If the `--force` option given,     existing configuration, CV file `cv-example.json`, template `example.hbs`, image `example-user-photo.jpg` WILL BE OVERWRITTEN !!!',
         requiresArg: false,
         default: false,
         type: 'boolean',
@@ -179,7 +198,8 @@ const getCommandLineOptions = async (userConfig) => {
         type: 'boolean',
       },
     })
-    .locale('en').argv
+    .locale('en')
+    .wrap(120).argv
 }
 
 // getting the json file data
@@ -429,8 +449,8 @@ const main = async () => {
 
     // process icons and images
     const processedCvData = await processJsonImages(
-      await processJsonIcons(cvData, AppConfig.APP_DIR),
-      AppConfig.APP_DIR,
+      await processJsonIcons(cvData, options.iconsBaseDir),
+      options.imagesBaseDir,
     )
 
     // walk through selected templates
