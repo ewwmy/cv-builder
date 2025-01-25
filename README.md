@@ -1,36 +1,39 @@
 # CV Builder
 
-💻 A CLI utility to build pretty CV in PDF format 📕 based on JSON CV data and a Handlebars template.
+💻 A CLI utility to generate a well-formatted CV in PDF format 📕 based on JSON CV data and a Handlebars template.
 
 ## Dependencies
 
-- `fs-extra` to interact with filesystem conveniently
-- `handlebars` as a template processor
+- `fs-extra` for convenient filesystem interactions
+- `handlebars` as the template processor
 - `marked` to provide Markdown support
-- `puppeteer` to build PDF
+- `puppeteer` to generate PDFs
 - `sharp` to preload and process images
-- `yargs` to manage and process command-lime arguments conveniently
+- `yargs` to manage and process command-line arguments conveniently
 
 ## Why?
 
-The project was inspired by [JSON Resume](https://jsonresume.org/).
+This project was inspired by [JSON Resume](https://jsonresume.org/). The main idea of this project is to provide you a convenient way to store the information about your work experience, achievments, and other CV data separately from its representation, in multiple languages, in one place, and to easily generate good-looking multilingual CVs in PDF format in one command.
+
+For example, you might get tired of managing multiple CV versions in office document files. You want to add a new record in your CV and you might get confused which version is more actual or you need to add this record into all the versions. This application solves that problem.
 
 ### Advantages
 
 - No strict JSON schema
-  - Though special fields are made to provide Markdown support, translations, icons or images
+  - Special fields enable features like Markdown support, translations, icons, or images
 - Markdown support
-- Multilingual support (you can provide multiple translations in special JSON fields)
-- Ready to use without complicated setup
-- Complete working example out-of-the-box
-- The data is separated from its representation
-  - You can have some private data that will not be visible in the result
-  - You only focus either on your data or on how it looks.
+- Multilingual support (provide multiple translations in dedicated JSON fields)
+- Ready to use without complex setup
+- Fully functional example included out of the box
+- Clear separation of data and presentation
+  - You can include private data that won't appear in the final output
+  - Allows focus either on the data or on the design separately
+- Privacy-oriented (no data is processed or collected outside your computer).
 
 ### Disadvantages
 
-- Requires basic knowledge of HTML / CSS / Handlebars
-- Some dependencies such as **Pupetteer** are heavy.
+- Requires basic knowledge of HTML, CSS, and Handlebars
+- Some dependencies, such as **Puppeteer**, are resource-heavy.
 
 ## Installation
 
@@ -47,94 +50,221 @@ npm install -g .
 npm uninstall -g @ewwmy/cv-builder
 ```
 
-> Note that the application directory on `~/.config/ewwmy/cv-builder` and all the contents inside will be preserved.
+> Note: The application directory located at `~/.config/ewwmy/cv-builder` and all its contents will be preserved.
 
 ## How it works
 
-Once installed, it cerates all the needed files and folders in `~/.config/ewwmy/cv-builder`.
+After installation, the utility creates all the necessary files and folders in `~/.config/ewwmy/cv-builder`.
 
 They are:
 
-- `icons`: default base folder to find icons; a set of the most useful icons is included
-- `images`: default base folder to find images; an example AI-generated user photo is included
-- `templates`: default folder to store templates; a template example is included
-- `cv-example.json`: example of the JSON CV data
-- `out`: default folder where compiled PDF files are saved
-- `settings/settings.json`: settings file that you can configure
+- `icons`: default base folder for icons (in case of relative paths); includes a set of common icons
+- `images`: default base folder for images (in case of relative paths); includes an example AI-generated user photo
+- `templates`: default folder for templates; includes an example template
+- `cv-example.json`: example JSON CV data
+- `out`: default folder for generated PDF files
+- `settings/settings.json`: configuration file with the user preferences.
+
+When you run the program, it:
+
+- reads the configuration to determine what files to use, where they are stored and where to save the results
+- reads the input CV JSON file
+- reads selected templates
+- consider seleted languages
+- compiles PDF based on the CV JSON data and selected templates and languages; amount of the result PDF files is **amount of the selected templates** multiplied by **amount of the selected languages**.
 
 ## Usage
 
 ### Basics
 
-After the installation, the utility can be called everywhere as `cv-builder`.
+Once installed, you can call the utility from anywhere using `cv-builder` command.
 
-You can run the builder out-of-the-box without any preparations:
+You can run it immediately with no additional setup:
 
 ```bash
 cv-builder
 ```
 
-It runs building the example that is included inside and set up by default.
+This builds the included example.
 
-Classically, you can print the current version and get useful help:
+As a common practice for CLI utilities, you can also check the version or access helpful usage information:
 
 ```bash
 cv-builder --version
 cv-builder --help
 ```
 
-As you can see in the help, there is a lot of options that you can adjust. Options passed in the command line, override the options that set up in the settings file (`settings/settings.json`).
+### Command-line options
 
-If you broke something, don't worry. You can always restore the default configuration, files and folders in `~/.config/ewwmy/cv-builder`:
+Main command-line options:
+
+- `-l`, `--locales`: locales (languages) to build (e.g., `-l en-US -l ru-RU` or `-l en-US ru-RU`)
+- `-t`, `templates`: template files to build without `.hbs` suffix (e.g., `-t example -t main -t another-cool-template` or `-t example main another-cool-template`)
+- `-i`, `--input`: path to the JSON file with the data of your CV (e.g., `-i /home/user/my-cv.json`)
+- `-o`, `--output`: directory for the built PDF files (e.g., `-o /home/user/my-cv`)
+- `-d`, `--templates-dir`: directory for the templates (e.g., `-o /home/user/my-cv-templates`)
+
+Command-line options override settings defined in `settings/settings.json`. For detailed information about the configuration, please refer to the **Default Configuration** section.
+
+If you accidentally misconfigure something, you can restore the default setup:
 
 ```bash
 cv-builder --restore
 ```
 
-> Note that `cv-builder --restore` doesn't overwrite existing files. If you are sure the existing files don't contain any crucial information that needs to backup, you can force overwriting:
+> Note: `cv-builder --restore` does not overwrite existing files. To force overwrite, use:
 
 ```bash
 cv-builder --restore --force
 ```
 
-### JSON
+### Default Configuration
 
-> By default, the JSON CV Data is placed here: `~/.config/ewwmy/cv-builder/cv-example.json`.
+> Default settings file: `~/.config/ewwmy/cv-builder/settings/settings.json`. You should not move or rename it.
 
-You can create any structure. However, some field names are preserved and used to implement the features. Please, refer to the **Features Overview** section to learn them.
+These are configuration options and their corresponding command-line options:
 
-You can also learn the example in `~/.config/ewwmy/cv-builder/cv-example.json`. It covers all the features and offers an idea how you can organize your data.
+| Option               | Command-line            | Type     | Description                                                 |
+| -------------------- | ----------------------- | -------- | ----------------------------------------------------------- |
+| `LOCALES`            | `-l`, `--locales`       | `array`  | Locales (languages) to build                                |
+| `TEMPLATES`          | `-t`, `templates`       | `array`  | Template files to build (omit the `.hbs` extension)         |
+| `INPUT_CV_FILE_PATH` | `-i`, `--input`         | `string` | Path to the JSON file containing CV data                    |
+| `OUTPUT_DIR`         | `-o`, `--output`        | `string` | Directory for the generated PDF files                       |
+| `TEMPLATES_DIR`      | `-d`, `--templates-dir` | `string` | Directory containing the templates                          |
+| `BASE_IMAGES_DIR`    | `--images-base-dir`     | `string` | Base directory for relative image paths in the JSON CV data |
+| `BASE_ICONS_DIR`     | `--icons-base-dir`      | `string` | Base directory for relative icon paths in the JSON CV data  |
 
-### Default Settings
+### CV JSON File
 
-> Default settings file is placed here: `~/.config/ewwmy/cv-builder/settings/settings.json`. It should not be moved.
+> The example file at `~/.config/ewwmy/cv-builder/cv-example.json` is used by default. It demonstrates all features and provides a template for organizing your data. It's highly recommended to explore it.
 
-| Option               | Command-line            | Type     | Description                                                     |
-| -------------------- | ----------------------- | -------- | --------------------------------------------------------------- |
-| `LOCALES`            | `-l`, `--locales`       | `array`  | Locales (languages) to build                                    |
-| `TEMPLATES`          | `-t`, `templates`       | `array`  | Template files to build (without `.hbs` suffix)                 |
-| `INPUT_CV_FILE_PATH` | `-i`, `--input`         | `string` | Path to the JSON file with the data of your CV                  |
-| `OUTPUT_DIR`         | `-o`, `--output`        | `string` | Directory for the built PDF files                               |
-| `TEMPLATES_DIR`      | `-d`, `--templates-dir` | `string` | Directory for the templates                                     |
-| `BASE_IMAGES_DIR`    | `--images-base-dir`     | `string` | Base directory for relative paths of images in the JSON CV Data |
-| `BASE_ICONS_DIR`     | `--icons-base-dir`      | `string` | Base directory for relative paths of icons in the JSON CV Data  |
+You can create any structure, use any valid JSON data, but some field names are reserved for specific features. Refer to the **Features Overview** section for details.
 
 ### Templates
 
-The CV Builder uses Handlebars template engine and comes with an example that you can find here: `~/.config/ewwmy/cv-builder/templates/example.hbs`.
+CV Builder uses the Handlebars template engine and includes an example template at `~/.config/ewwmy/cv-builder/templates/example.hbs`.
 
-Please, read the [Handlebars Guide](https://handlebarsjs.com/guide/) to get more detailed information on how to use it.
+Please, refer to the [Handlebars Guide](https://handlebarsjs.com/guide/) for more information on using Handlebars.
 
-You can create as many templates as you want. Template files should have `.hbs` extension. You can specify the templates you want to build either in command-line options (higher priority) or in `settings.json` / `TEMPLATES`, by only providing the names without `.hbs` extension. The directory to find templates can be specified either in command-line options (higher priority) or in `settings.json` / `TEMPLATES_DIR`.
+You can create as many templates as needed. Template files must have the `.hbs` extension. Specify templates you need to generate PDF with in the `TEMPLATES` setting or via command-line options. Similarly, the directory for templates can be configured via the `TEMPLATES_DIR` setting or command-line options.
 
-There are features you can use in a template. Please, refer to the **Features Overview** section to learn them.
+> Note: The options provided via command-line override the options from the `settings/settings.json` configuration file.
 
-### Features Overview
+### Features
 
-| Feature   | JSON                                                       | Template                                                    | Description                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| --------- | ---------------------------------------------------------- | ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Markdown  | `{ "data": "My **markdown** text"`                         | `{{markdown data}}`                                         | You can use markdown at any level of the JSON. Local paths to the resources are not supported. Builds as a text node.                                                                                                                                                                                                                                                                                                                          |
-| Image     | `{"data": {"type": "image", "path": "...", "scale": 0.5}}` | `{{{image data width='150px' height='150px' roundness=1}}}` | In JSON, `type` and `path` are required. `type` must be `"image"`. `path` can be either relative (to the default base folder for images) or absolute; URLs are not supported. `scale` is optional and can be used to reduce image size if it's too large. In a template, `data` means the JSON field name of the image. `width`, `height` and `roundness` (`0`..`1`) are optional and used to adjust the result CSS. Builds as an `<img>` tag. |
-| Icon      | `{"icon": "linkedin-logo.svg"}`                            | `{{{icon}}}`                                                | Loads an SVG icon. In JSON, it should be a field with the name `icon` that contains either relative (to the default base folder for icons) or absolute path.; URLs are not supported. Builds as an `<svg>` tag.                                                                                                                                                                                                                                |
-| Languages | `{"data": {"en": "English text", "ru": "Russian text"}}`   | `{{data}}`                                                  | Multilingual support. Each language will be used for a corresponding locale option specified to build. In JSON, use double-letter language code. If there is no translation with the required language, it may cause an error. Can be used together with `markdown`, e.g., `{{markdown data}}`. Builds as a text node with a required language.                                                                                                |
-| Date      | `{"startedAt": "2020-12-31"}`                              | `{{date startedAt}}`                                        | Used to pretty print dates according to used locales. In JSON, date must be in the format `YYYY-MM-DD`. Builds as a text node.                                                                                                                                                                                                                                                                                                                 |
+#### Markdown Support
+
+You can use Markdown anywhere in your JSON data. To render Markdown in templates, use the `{{markdown}}` helper.
+
+##### JSON Example
+
+```json
+{
+  "description": "This is **bold** and _italic_"
+}
+```
+
+##### Template Usage
+
+```handlebars
+{{markdown description}}
+```
+
+> Note: The `markdown` is the special helper name and the `description` refers to the name of the JSON field.
+
+#### Image Handling
+
+To include an image, use a specific JSON structure and the `{{{image}}}` helper in the template.
+
+##### JSON Example
+
+```json
+{
+  "profilePicture": {
+    "type": "image",
+    "path": "profile.jpg",
+    "scale": 0.5
+  }
+}
+```
+
+- `type`: required; must be `"image"`
+- `path`: required; relative to the base image folder or an absolute path
+- `scale`: optional; reduces image size; defaults to `1`; useful if the original image is too large and can cause aliasing while
+
+##### Template Usage
+
+```handlebars
+{{{image profilePicture width='150px' height='150px' roundness=1}}}
+```
+
+- `width`: optional; a valid CSS value for the resulting image in the generated PDF
+- `height`: optional; a valid CSS value for the resulting image in the generated PDF
+- `roundness`: optional; defaults to `0` which means no roundness; `1` means an ideal circle.
+
+> Note: The `image` is the special helper name and the `profilePicture` refers to the name of the JSON field.
+
+#### Icons Support
+
+Icons are loaded from SVG files. Use the `icon` field in your JSON and the `{{{icon}}}` helper in a template.
+
+##### JSON Example
+
+```json
+{
+  "social": {
+    "icon": "linkedin-logo.svg"
+  }
+}
+```
+
+> The path must be either absolute or relative to the base icons directory which is specified in the configuration or command-line.
+
+##### Template Usage
+
+```handlebars
+{{{icon social.icon}}}
+```
+
+#### Multilingual Support
+
+You can include translations for any field in JSON using locale keys (e.g., `en`, `ru`). Specify the locales when building the CV or set up the default locales in the configuration.
+
+The locale determines which translation is used. If you have 2 translations in your JSON (e.g., `en`, `ru`) and specify both in the configuration or in command-line, it will create 2 PDF files with each translation provided.
+
+##### JSON Example
+
+```json
+{
+  "greeting": {
+    "en": "Hello",
+    "ru": "Привет"
+  }
+}
+```
+
+##### Template Usage
+
+```handlebars
+{{greeting}}
+```
+
+#### Date Formatting
+
+Dates are formatted based on the specified locale. Use the `{{date}}` helper for pretty printing.
+
+##### JSON Example
+
+```json
+{
+  "startedAt": "2020-12-31"
+}
+```
+
+The date must be in `YYYY-MM-DD` format.
+
+##### Template Usage
+
+```handlebars
+{{date startedAt}}
+```
