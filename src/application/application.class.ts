@@ -8,57 +8,14 @@ import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 import Handlebars from 'handlebars'
 import sharp from 'sharp'
+import { inject, injectable } from 'inversify'
+import { Config, UserConfig } from '../types/config.types'
+import { JsonObject, JsonValue } from '../types/json.types'
+import { MarginLabel, MarginObject } from '../types/margin.types'
+import { DepNames } from '../enum/dep-names'
+import { ILogger } from '../logger/logger.interface'
 
-type JsonValue = string | number | boolean | null | JsonObject | JsonArray
-interface JsonObject {
-  [key: string]: JsonValue
-}
-type JsonArray = JsonValue[]
-
-type UserConfig = {
-  LOCALES: string[]
-  TEMPLATES: string[]
-  INPUT_CV_FILE_PATH: string
-  OUTPUT_DIR: string
-  TEMPLATES_DIR: string
-  BASE_IMAGES_DIR: string
-  BASE_ICONS_DIR: string
-}
-
-type Config = {
-  APP_GROUP_NAME: string
-  APP_NAME: string
-
-  EXAMPLE_CV: string
-  EXAMPLE_IMAGES: string
-  EXAMPLE_ICONS: string
-  EXAMPLE_TEMPLATES: string
-
-  APP_DIR: string
-
-  CONFIG_DIR: string
-  CONFIG_FILE_PATH: string
-
-  EXAMPLES_DIR: string
-  EXAMPLE_CV_FILE_PATH: string
-  EXAMPLE_IMAGES_DIR: string
-  EXAMPLE_ICONS_DIR: string
-  EXAMPLE_TEMPLATES_DIR: string
-
-  DEFAULT_CV_FILE_PATH: string
-  DEFAULT_IMAGES_DIR: string
-  DEFAULT_ICONS_DIR: string
-  DEFAULT_TEMPLATES_DIR: string
-  DEFAULT_OUTPUT_DIR: string
-
-  DEFAULT_USER_CONFIG: UserConfig
-}
-
-type MarginLabel = 'top' | 'right' | 'bottom' | 'left'
-type MarginObject = {
-  [key in MarginLabel]?: string
-}
-
+@injectable()
 export class Application {
   protected config: Config = {
     APP_GROUP_NAME: '',
@@ -91,7 +48,7 @@ export class Application {
     },
   }
 
-  public constructor() {
+  public constructor(@inject(DepNames.Logger) private logger: ILogger) {
     // initialize the main app config
     this.initializeAppConfig()
   }
@@ -345,8 +302,8 @@ export class Application {
               const a = data[key]
               data[key] = String(await this.readFileData(path))
             } catch (error) {
-              console.warn(
-                `Warning: Couldn't load the icon on "${path}". The icon will be ignored.`,
+              this.logger.warn(
+                `Couldn't load the icon on "${path}". The icon will be ignored.`,
               )
               data[key] = ''
             }
@@ -386,9 +343,9 @@ export class Application {
           data.base64 = await this.imageToPngBase64(imagePath, scale)
         } catch (error) {
           if (error instanceof Error) {
-            console.warn(error.message)
+            this.logger.warn(error.message)
           } else {
-            console.warn(error)
+            this.logger.warn(error)
           }
           data.base64 = ''
         }
@@ -575,7 +532,7 @@ export class Application {
       // restore default data if the option `restore` is set
       if (options.restore) {
         await this.restoreDefault(this.config, options.force)
-        console.log('Info: Restored' + (options.force ? ' (force)' : ''))
+        this.logger.info('Restored' + (options.force ? ' (force)' : ''))
         process.exit(0)
       }
 
@@ -642,7 +599,7 @@ export class Application {
           await page.close()
 
           await browser.close()
-          console.log(`Info: PDF saved: "${outputPath}"`)
+          this.logger.info(`PDF saved: "${outputPath}"`)
 
           // unregistering helper for date
           this.unregisterHandlebarsDate()
@@ -650,9 +607,9 @@ export class Application {
       }
     } catch (error) {
       if (error instanceof Error) {
-        console.error(error.message)
+        this.logger.error(error.message)
       } else {
-        console.error(error)
+        this.logger.error(error)
       }
     }
   }
