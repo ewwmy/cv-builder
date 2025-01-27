@@ -41,6 +41,7 @@ For example, you might get tired of managing multiple CV versions in office docu
 mkdir cv-builder
 cd cv-builder
 git clone git@github.com:ewwmy/cv-builder.git .
+npm ci
 npm install -g .
 ```
 
