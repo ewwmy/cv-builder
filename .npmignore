@@ -1,0 +1,14 @@
+src/
+.vscode/
+tsconfig.json
+.prettierrc
+.eslintrc
+.editorconfig
+*.code-workspace
+
+*.log
+*.bak
+*.swp
+
+__tests__/
+tests/
