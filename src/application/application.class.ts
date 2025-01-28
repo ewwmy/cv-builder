@@ -12,7 +12,7 @@ import { inject, injectable } from 'inversify'
 import { Config, UserConfig } from '../types/config.types'
 import { JsonObject, JsonValue } from '../types/json.types'
 import { MarginLabel, MarginObject } from '../types/margin.types'
-import { DepNames } from '../enum/dep-names'
+import { DependencyTypes } from '../types/dependency.types'
 import { ILogger } from '../logger/logger.interface'
 
 @injectable()
@@ -48,7 +48,7 @@ export class Application {
     },
   }
 
-  public constructor(@inject(DepNames.Logger) private logger: ILogger) {
+  public constructor(@inject(DependencyTypes.Logger) private logger: ILogger) {
     // initialize the main app config
     this.initializeAppConfig()
   }

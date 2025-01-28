@@ -1,5 +1,7 @@
+import { injectable } from 'inversify'
 import { ILogger } from '../logger.interface'
 
+@injectable()
 export class ConsoleLoggerService implements ILogger {
   public logger: Console
 
