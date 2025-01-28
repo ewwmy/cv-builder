@@ -5,7 +5,7 @@ import 'reflect-metadata'
 
 @injectable()
 export class TslogLoggerService<T> implements ILogger {
-  public logger: Logger<T>
+  protected logger: Logger<T>
 
   constructor() {
     this.logger = new Logger({
