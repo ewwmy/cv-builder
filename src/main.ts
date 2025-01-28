@@ -18,7 +18,9 @@ import { JsonTransformerService } from './json-transformer/json-transformer.serv
 import { ImageService } from './images/image.service'
 
 export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
-  bind<ApplicationService>(DependencyTypes.Application).to(ApplicationService)
+  bind<ApplicationService>(DependencyTypes.Application)
+    .to(ApplicationService)
+    .inSingletonScope()
   bind<ILogger>(DependencyTypes.Logger)
     .to(TslogLoggerService<ILogObj>)
     .inSingletonScope()
@@ -41,7 +43,7 @@ export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
     .inSingletonScope()
   bind<JsonTransformerService>(DependencyTypes.JsonTransformer)
     .to(JsonTransformerService)
-    .inSingletonScope()
+    .inTransientScope()
 })
 
 export const bootstrap = async (): Promise<void> => {

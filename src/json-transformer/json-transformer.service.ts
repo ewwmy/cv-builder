@@ -8,24 +8,17 @@ import { FileService } from '../files/file.service'
 
 @injectable()
 export class JsonTransformerService {
-  protected _data: JsonValue = {}
-
   public constructor(
     @inject(DependencyTypes.Logger) private logger: ILogger,
     @inject(DependencyTypes.Image) private imageService: ImageService,
     @inject(DependencyTypes.File) private fileService: FileService,
   ) {}
 
-  public get data(): JsonValue {
-    return this._data
-  }
-
-  public set data(data: JsonValue) {
-    this._data = data
-  }
-
   // load icons in json
-  public async processJsonIcons(basePath: string = '.'): Promise<this> {
+  public async processJsonIcons(
+    data: JsonValue,
+    basePath: string = '.',
+  ): Promise<JsonValue> {
     const recursiveProcess = async (
       data: JsonValue,
       basePath: string,
@@ -55,13 +48,16 @@ export class JsonTransformerService {
       }
     }
 
-    await recursiveProcess(this._data, basePath)
-    return this
+    await recursiveProcess(data, basePath)
+    return data
   }
 
   // recursive function to re-map the data with the processed images and converted to base64
   // { type: "image"; path: string; scale?: number } to { type: "image"; path: string; scale?: number; base64: string }
-  public async processJsonImages(basePath: string = '.'): Promise<this> {
+  public async processJsonImages(
+    data: JsonValue,
+    basePath: string = '.',
+  ): Promise<JsonValue> {
     const recursiveProcess = async (
       data: JsonValue,
       basePath: string,
@@ -104,39 +100,36 @@ export class JsonTransformerService {
       }
     }
 
-    await recursiveProcess(this._data, basePath)
-    return this
+    await recursiveProcess(data, basePath)
+    return data
   }
 
   // recursive function to re-map the data with the selected language
-  public processJsonLocalizedData(language: string): this {
-    const recursiveProcess = (data: JsonValue, language: string): JsonValue => {
-      if (typeof data !== 'object' || data === null) {
-        return data
-      }
-
-      if (
-        data.hasOwnProperty(language) &&
-        typeof (data as JsonObject)[language] === 'string'
-      ) {
-        return (data as JsonObject)[language]
-      }
-
-      if (Array.isArray(data)) {
-        return data.map((item) => recursiveProcess(item, language))
-      }
-
-      return Object.keys(data).reduce((acc, key) => {
-        acc[key] = recursiveProcess((data as JsonObject)[key], language)
-        return acc
-      }, {} as JsonObject)
+  public processJsonLocalizedData(
+    data: JsonValue,
+    language: string,
+  ): JsonValue {
+    if (typeof data !== 'object' || data === null) {
+      return data
     }
 
-    this._data = recursiveProcess(this._data, language)
-    return this
-  }
+    if (
+      data.hasOwnProperty(language) &&
+      typeof (data as JsonObject)[language] === 'string'
+    ) {
+      return (data as JsonObject)[language]
+    }
 
-  public build(): JsonValue {
-    return this._data
+    if (Array.isArray(data)) {
+      return data.map((item) => this.processJsonLocalizedData(item, language))
+    }
+
+    return Object.keys(data).reduce((acc, key) => {
+      acc[key] = this.processJsonLocalizedData(
+        (data as JsonObject)[key],
+        language,
+      )
+      return acc
+    }, {} as JsonObject)
   }
 }

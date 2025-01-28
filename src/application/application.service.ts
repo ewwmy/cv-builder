@@ -129,14 +129,14 @@ export class ApplicationService {
     if (!cvData) return
 
     // process icons and images
-    this.jsonTransformer.data = cvData
-    await (
-      await this.jsonTransformer.processJsonIcons(options.iconsBaseDir)
-    ).processJsonImages(options.imagesBaseDir)
+    const processedCvData = await this.jsonTransformer.processJsonImages(
+      await this.jsonTransformer.processJsonIcons(cvData, options.iconsBaseDir),
+      options.imagesBaseDir,
+    )
 
     // walk through selected templates
     for (const template of options.templates) {
-      // look for common template and read it if found
+      // look for the template and read it if found
       const templateData = await this.fileService.readFileData(
         join(options.templatesDir, `${template}.hbs`),
       )
@@ -154,9 +154,10 @@ export class ApplicationService {
         const outputPath = join(options.output, `${template}_${locale}.pdf`)
 
         // language-mapped json data
-        const localizedCvData = this.jsonTransformer
-          .processJsonLocalizedData(lang)
-          .build()
+        const localizedCvData = this.jsonTransformer.processJsonLocalizedData(
+          processedCvData,
+          lang,
+        )
 
         // compile html
         const html = this.templateEngine.compile(templateData, localizedCvData)
