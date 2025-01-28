@@ -109,27 +109,28 @@ export class JsonTransformerService {
     data: JsonValue,
     language: string,
   ): JsonValue {
-    if (typeof data !== 'object' || data === null) {
-      return data
+    const recursiveProcess = (data: JsonValue, language: string): JsonValue => {
+      if (typeof data !== 'object' || data === null) {
+        return data
+      }
+
+      if (
+        data.hasOwnProperty(language) &&
+        typeof (data as JsonObject)[language] === 'string'
+      ) {
+        return (data as JsonObject)[language]
+      }
+
+      if (Array.isArray(data)) {
+        return data.map((item) => recursiveProcess(item, language))
+      }
+
+      return Object.keys(data).reduce((acc, key) => {
+        acc[key] = recursiveProcess((data as JsonObject)[key], language)
+        return acc
+      }, {} as JsonObject)
     }
 
-    if (
-      data.hasOwnProperty(language) &&
-      typeof (data as JsonObject)[language] === 'string'
-    ) {
-      return (data as JsonObject)[language]
-    }
-
-    if (Array.isArray(data)) {
-      return data.map((item) => this.processJsonLocalizedData(item, language))
-    }
-
-    return Object.keys(data).reduce((acc, key) => {
-      acc[key] = this.processJsonLocalizedData(
-        (data as JsonObject)[key],
-        language,
-      )
-      return acc
-    }, {} as JsonObject)
+    return recursiveProcess(data, language)
   }
 }

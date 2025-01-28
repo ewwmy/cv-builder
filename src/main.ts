@@ -43,7 +43,7 @@ export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
     .inSingletonScope()
   bind<JsonTransformerService>(DependencyTypes.JsonTransformer)
     .to(JsonTransformerService)
-    .inTransientScope()
+    .inSingletonScope()
 })
 
 export const bootstrap = async (): Promise<void> => {
