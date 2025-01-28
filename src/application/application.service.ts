@@ -129,8 +129,8 @@ export class ApplicationService {
     if (!cvData) return
 
     // process icons and images
-    const processedCvData = await this.jsonTransformer.processJsonImages(
-      await this.jsonTransformer.processJsonIcons(cvData, options.iconsBaseDir),
+    const processedCvData = await this.jsonTransformer.processImages(
+      await this.jsonTransformer.processIcons(cvData, options.iconsBaseDir),
       options.imagesBaseDir,
     )
 
@@ -154,7 +154,7 @@ export class ApplicationService {
         const outputPath = join(options.output, `${template}_${locale}.pdf`)
 
         // language-mapped json data
-        const localizedCvData = this.jsonTransformer.processJsonLocalizedData(
+        const localizedCvData = this.jsonTransformer.processLocalizedData(
           processedCvData,
           lang,
         )

@@ -14,123 +14,99 @@ export class JsonTransformerService {
     @inject(DependencyTypes.File) private fileService: FileService,
   ) {}
 
-  // load icons in json
-  public async processJsonIcons(
+  // process icons in json
+  public async processIcons(
     data: JsonValue,
     basePath: string = '.',
   ): Promise<JsonValue> {
-    const recursiveProcess = async (
-      data: JsonValue,
-      basePath: string,
-    ): Promise<void> => {
-      if (Array.isArray(data)) {
-        await Promise.all(data.map((item) => recursiveProcess(item, basePath)))
-      } else if (typeof data === 'object' && data !== null) {
-        await Promise.all(
-          Object.keys(data).map(async (key) => {
-            if (key === 'icon' && typeof data[key] === 'string') {
-              const path: string = isAbsolute(data[key])
-                ? data[key]
-                : resolve(join(basePath, data[key]))
-              try {
-                data[key] = String(await this.fileService.readFileData(path))
-              } catch (error) {
-                this.logger.warn(
-                  `Couldn't load the icon on "${path}". The icon will be ignored.`,
-                )
-                data[key] = ''
-              }
-            } else {
-              await recursiveProcess(data[key], basePath)
+    if (Array.isArray(data)) {
+      await Promise.all(data.map((item) => this.processIcons(item, basePath)))
+    } else if (typeof data === 'object' && data !== null) {
+      await Promise.all(
+        Object.keys(data).map(async (key) => {
+          if (key === 'icon' && typeof data[key] === 'string') {
+            const path: string = isAbsolute(data[key])
+              ? data[key]
+              : resolve(join(basePath, data[key]))
+            try {
+              data[key] = String(await this.fileService.readFileData(path))
+            } catch (error) {
+              this.logger.warn(
+                `Couldn't load the icon at "${path}". The icon will be ignored.`,
+              )
+              data[key] = ''
             }
-          }),
-        )
-      }
+          } else {
+            await this.processIcons(data[key], basePath)
+          }
+        }),
+      )
     }
-
-    await recursiveProcess(data, basePath)
     return data
   }
 
   // recursive function to re-map the data with the processed images and converted to base64
   // { type: "image"; path: string; scale?: number } to { type: "image"; path: string; scale?: number; base64: string }
-  public async processJsonImages(
+  public async processImages(
     data: JsonValue,
     basePath: string = '.',
   ): Promise<JsonValue> {
-    const recursiveProcess = async (
-      data: JsonValue,
-      basePath: string,
-    ): Promise<void> => {
-      if (Array.isArray(data)) {
-        await Promise.all(data.map((item) => recursiveProcess(item, basePath)))
-      } else if (typeof data === 'object' && data !== null) {
-        if (
-          data.hasOwnProperty('path') &&
-          data.hasOwnProperty('type') &&
-          typeof data.path === 'string' &&
-          typeof data.type === 'string' &&
-          data.type === 'image'
-        ) {
-          let { path: imagePath, scale } = data
-          imagePath = isAbsolute(imagePath)
-            ? imagePath
-            : resolve(join(basePath, imagePath))
-          scale = typeof scale === 'number' ? scale : 1
-          try {
-            data.base64 = await this.imageService.imageToBase64(
-              imagePath,
-              scale,
-            )
-          } catch (error) {
-            if (error instanceof Error) {
-              this.logger.warn(error.message)
-            } else {
-              this.logger.warn(error)
-            }
-            data.base64 = ''
+    if (Array.isArray(data)) {
+      await Promise.all(data.map((item) => this.processImages(item, basePath)))
+    } else if (typeof data === 'object' && data !== null) {
+      if (
+        data.hasOwnProperty('path') &&
+        data.hasOwnProperty('type') &&
+        typeof data.path === 'string' &&
+        typeof data.type === 'string' &&
+        data.type === 'image'
+      ) {
+        let { path: imagePath, scale } = data
+        imagePath = isAbsolute(imagePath)
+          ? imagePath
+          : resolve(join(basePath, imagePath))
+        scale = typeof scale === 'number' ? scale : 1
+        try {
+          data.base64 = await this.imageService.imageToBase64(imagePath, scale)
+        } catch (error) {
+          if (error instanceof Error) {
+            this.logger.warn(error.message)
+          } else {
+            this.logger.warn(error)
           }
-        } else {
-          await Promise.all(
-            Object.keys(data).map((key) =>
-              recursiveProcess(data[key], basePath),
-            ),
-          )
+          data.base64 = ''
         }
+      } else {
+        await Promise.all(
+          Object.keys(data).map((key) =>
+            this.processImages(data[key], basePath),
+          ),
+        )
       }
     }
-
-    await recursiveProcess(data, basePath)
     return data
   }
 
   // recursive function to re-map the data with the selected language
-  public processJsonLocalizedData(
-    data: JsonValue,
-    language: string,
-  ): JsonValue {
-    const recursiveProcess = (data: JsonValue, language: string): JsonValue => {
-      if (typeof data !== 'object' || data === null) {
-        return data
-      }
-
-      if (
-        data.hasOwnProperty(language) &&
-        typeof (data as JsonObject)[language] === 'string'
-      ) {
-        return (data as JsonObject)[language]
-      }
-
-      if (Array.isArray(data)) {
-        return data.map((item) => recursiveProcess(item, language))
-      }
-
-      return Object.keys(data).reduce((acc, key) => {
-        acc[key] = recursiveProcess((data as JsonObject)[key], language)
-        return acc
-      }, {} as JsonObject)
+  public processLocalizedData(data: JsonValue, language: string): JsonValue {
+    if (typeof data !== 'object' || data === null) {
+      return data
     }
 
-    return recursiveProcess(data, language)
+    if (
+      data.hasOwnProperty(language) &&
+      typeof (data as JsonObject)[language] === 'string'
+    ) {
+      return (data as JsonObject)[language]
+    }
+
+    if (Array.isArray(data)) {
+      return data.map((item) => this.processLocalizedData(item, language))
+    }
+
+    return Object.keys(data).reduce((acc, key) => {
+      acc[key] = this.processLocalizedData((data as JsonObject)[key], language)
+      return acc
+    }, {} as JsonObject)
   }
 }
