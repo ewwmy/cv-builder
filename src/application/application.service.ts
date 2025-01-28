@@ -12,7 +12,7 @@ import { JsonTransformerService } from '../json-transformer/json-transformer.ser
 import { FileService } from '../files/file.service'
 
 @injectable()
-export class Application {
+export class ApplicationService {
   public constructor(
     @inject(DependencyTypes.Logger) private logger: ILogger,
     @inject(DependencyTypes.Config) private config: AppConfigService,

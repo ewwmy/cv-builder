@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { Container, ContainerModule, interfaces } from 'inversify'
-import { Application } from './application/application.class'
+import { ApplicationService } from './application/application.service'
 import { ILogger } from './logger/logger.interface'
 import { DependencyTypes } from './types/dependency.types'
 import { TslogLoggerService } from './logger/ts-log/tslog-logger.service'
@@ -18,7 +18,7 @@ import { JsonTransformerService } from './json-transformer/json-transformer.serv
 import { ImageService } from './images/image.service'
 
 export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
-  bind<Application>(DependencyTypes.Application).to(Application)
+  bind<ApplicationService>(DependencyTypes.Application).to(ApplicationService)
   bind<ILogger>(DependencyTypes.Logger)
     .to(TslogLoggerService<ILogObj>)
     .inSingletonScope()
@@ -48,11 +48,13 @@ export const bootstrap = async (): Promise<void> => {
   try {
     const appContainer = new Container()
     appContainer.load(appBindings)
-    const app = appContainer.get<Application>(DependencyTypes.Application)
+    const app = appContainer.get<ApplicationService>(
+      DependencyTypes.Application,
+    )
     await app.run()
   } catch (error) {
     if (error instanceof Error) {
-      console.error(error)
+      console.error(error.message)
     } else {
       console.error(error)
     }
