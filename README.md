@@ -10,6 +10,8 @@
 - `puppeteer` to generate PDFs
 - `sharp` to preload and process images
 - `yargs` to manage and process command-line arguments conveniently
+- `tslog` to make logging more pretty and functional
+- `inversify` to handle dependency injection and improve code modularity.
 
 ## Why?
 
@@ -36,6 +38,14 @@ For example, you might get tired of managing multiple CV versions in office docu
 - Some dependencies, such as **Puppeteer**, are resource-heavy.
 
 ## Installation
+
+### From NPM Registry (if available)
+
+```bash
+npm install -g @ewwmy/cv-builder
+```
+
+### From GitHub Repository
 
 ```bash
 mkdir cv-builder
