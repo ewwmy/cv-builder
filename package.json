@@ -1,8 +1,11 @@
 {
   "name": "@ewwmy/cv-builder",
   "version": "2.0.4",
-  "main": "index.js",
+  "private": false,
   "type": "commonjs",
+  "engines": {
+    "node": ">=20"
+  },
   "bin": {
     "cv-builder": "./dist/main.js"
   },
@@ -16,10 +19,32 @@
     "start:watch": "node --watch --watch-path=\"./templates\" --watch-path=\"./data\" --watch-path=\"./index.js\" dist/main",
     "prepare": "npm run build"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "keywords": [
+    "cli",
+    "resume",
+    "cv",
+    "generator",
+    "builder",
+    "maker",
+    "multilingual",
+    "json",
+    "jsonresume",
+    "json-resume",
+    "json-cv",
+    "utility",
+    "pdf"
+  ],
+  "author": "Andrew Akimov <akimov.it.dev@gmail.com> (https://github.com/ewwmy)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ewwmy/cv-builder.git"
+  },
+  "homepage": "https://github.com/ewwmy/cv-builder",
+  "bugs": {
+    "url": "https://github.com/ewwmy/cv-builder/issues"
+  },
+  "license": "MIT",
+  "description": "💻 A CLI utility to generate a well-formatted CV in PDF format 📕 based on JSON CV data and a Handlebars template",
   "dependencies": {
     "fs-extra": "^11.2.0",
     "handlebars": "^4.7.8",
