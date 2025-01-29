@@ -7,7 +7,7 @@
     "node": ">=20"
   },
   "bin": {
-    "cv-builder": "./dist/main.js"
+    "cv-builder": "dist/main.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -37,7 +37,7 @@
   "author": "Andrew Akimov <akimov.it.dev@gmail.com> (https://github.com/ewwmy)",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ewwmy/cv-builder.git"
+    "url": "git+https://github.com/ewwmy/cv-builder.git"
   },
   "homepage": "https://github.com/ewwmy/cv-builder",
   "bugs": {
