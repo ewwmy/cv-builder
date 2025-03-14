@@ -109,4 +109,29 @@ export class JsonTransformerService {
       return acc
     }, {} as JsonObject)
   }
+
+  public processHiddenData(data: JsonValue): JsonValue {
+    if (typeof data !== 'object' || data === null) {
+      return data
+    }
+
+    if (
+      data.hasOwnProperty('hidden') &&
+      typeof (data as JsonObject)['hidden'] === 'boolean'
+    ) {
+      if ((data as JsonObject)['hidden'] === true) {
+        data = null
+        return data
+      }
+    }
+
+    if (Array.isArray(data)) {
+      return data.map((item) => this.processHiddenData(item))
+    }
+
+    return Object.keys(data).reduce((acc, key) => {
+      acc[key] = this.processHiddenData((data as JsonObject)[key])
+      return acc
+    }, {} as JsonObject)
+  }
 }
