@@ -128,16 +128,14 @@
         <div class='sidebar'>{{metadata.translations.contacts}}</div>
         <div class='main'>
           {{#each data.contacts}}
-            {{#if hidden}}{{else}}
-              <div class='contact-item'>
-                {{{icon}}}
-                {{#if markdown}}
-                  {{markdown value}}
-                {{else}}
-                  {{value}}
-                {{/if}}
-              </div>
-            {{/if}}
+            <div class='contact-item'>
+              {{{icon}}}
+              {{#if markdown}}
+                {{markdown value}}
+              {{else}}
+                {{value}}
+              {{/if}}
+            </div>
           {{/each}}
         </div>
       </div>

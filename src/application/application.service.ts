@@ -128,9 +128,12 @@ export class ApplicationService {
     const cvData = await this.getSourceData(options.input)
     if (!cvData) return
 
-    // process icons and images
+    // process icons and images + remove hidden data
     const processedCvData = await this.jsonTransformer.processImages(
-      await this.jsonTransformer.processIcons(cvData, options.iconsBaseDir),
+      await this.jsonTransformer.processIcons(
+        this.jsonTransformer.processHiddenData(cvData),
+        options.iconsBaseDir,
+      ),
       options.imagesBaseDir,
     )
 

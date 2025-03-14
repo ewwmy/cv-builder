@@ -279,3 +279,16 @@ The date must be in `YYYY-MM-DD` format.
 ```handlebars
 {{date startedAt}}
 ```
+
+#### Hidden Items
+
+Any object with the property `"hidden": true` will be excluded from the output. You can use it to store your notes (e.g., comments) in your JSON data.
+
+##### JSON Example
+
+```json
+{
+  "value": "Hidden text",
+  "hidden": true
+},
+```
