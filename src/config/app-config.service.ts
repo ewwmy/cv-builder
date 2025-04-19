@@ -60,7 +60,9 @@ export class AppConfigService implements IAppConfigService {
       join(this.data.CONFIG_DIR, 'settings.json'),
     )
 
-    this.data.EXAMPLES_DIR = resolve(join('.', 'data', 'examples'))
+    this.data.EXAMPLES_DIR = resolve(
+      join(__dirname, '..', '..', 'data', 'examples'),
+    )
 
     this.data.EXAMPLE_CV_FILE_PATH = resolve(
       join(this.data.EXAMPLES_DIR, this.data.EXAMPLE_CV),
