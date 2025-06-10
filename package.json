@@ -1,6 +1,6 @@
 {
   "name": "@ewwmy/cv-builder",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "private": false,
   "type": "commonjs",
   "engines": {
@@ -16,7 +16,7 @@
     "build:debug": "tsc --watch --sourceMap",
     "restore": "node dist/main --restore",
     "start": "node dist/main",
-    "start:watch": "node --watch --watch-path=\"./templates\" --watch-path=\"./data\" --watch-path=\"./index.js\" dist/main",
+    "start:watch": "node --watch --watch-path=\"./data\" dist/main",
     "prepare": "npm run build"
   },
   "keywords": [
