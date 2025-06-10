@@ -25,7 +25,7 @@ export class ImageService {
   private async readImage(path: string): Promise<Sharp> {
     try {
       const imageBuffer = await readFile(path)
-      return sharp(imageBuffer)
+      return sharp(imageBuffer, { failOnError: false })
     } catch (error) {
       this.handleError(error, path)
       throw error
