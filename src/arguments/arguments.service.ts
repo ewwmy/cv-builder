@@ -96,7 +96,7 @@ export class ArgumentsService {
 
     const labels: MarginLabel[] = ['top', 'right', 'bottom', 'left']
     items.forEach((item, key) => {
-      const pattern = /^\d+(px|pt|cm|mm|in)?$/
+      const pattern = /^\d+(\.\d+)?(px|pt|cm|mm|in)?$/
       if (pattern.test(item)) result[labels[key]] = item
     })
 
