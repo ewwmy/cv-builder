@@ -126,7 +126,9 @@ export class JsonTransformerService {
     }
 
     if (Array.isArray(data)) {
-      return data.map((item) => this.processHiddenData(item))
+      return data
+        .map((item) => this.processHiddenData(item))
+        .filter((item) => item !== null)
     }
 
     return Object.keys(data).reduce((acc, key) => {

@@ -282,7 +282,7 @@ The date must be in `YYYY-MM-DD` format.
 
 #### Hidden Items
 
-Any object with the property `"hidden": true` will be excluded from the output. You can use it to store your notes (e.g., comments) in your JSON data.
+Any object with the property `"hidden": true` will be excluded from the output, even if it's called from a template, ensuring it never passes to the output. You can use it to safely store your notes (e.g., comments) in your JSON data that should never be visible in the result PDF.
 
 ##### JSON Example
 
@@ -290,5 +290,19 @@ Any object with the property `"hidden": true` will be excluded from the output. 
 {
   "value": "Hidden text",
   "hidden": true
-},
+}
+```
+
+It's especially useful in arrays to exclude some elements:
+
+```json
+[
+  {
+    "email": "user@example.com"
+  },
+  {
+    "phone": "+0 (123) 456-78-90",
+    "hidden": true
+  }
+]
 ```
