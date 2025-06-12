@@ -1,6 +1,6 @@
 {
   "name": "@ewwmy/cv-builder",
-  "version": "2.0.9-repacked",
+  "version": "2.0.11",
   "private": false,
   "type": "commonjs",
   "engines": {
