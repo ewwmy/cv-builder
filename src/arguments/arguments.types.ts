@@ -3,6 +3,7 @@ export type ArgumentsObject = {
   templates: string[]
   input: string
   output: string
+  watch: boolean
   'templates-dir': string
   templatesDir: string
   'images-base-dir': string

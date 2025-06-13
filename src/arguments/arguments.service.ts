@@ -41,6 +41,14 @@ export class ArgumentsService {
           default: userConfig.OUTPUT_DIR,
           type: 'string',
         },
+        watch: {
+          alias: 'w',
+          describe:
+            'Watch for changes in CV data and templates to provide live preview',
+          requiresArg: false,
+          default: false,
+          type: 'boolean',
+        },
         'templates-dir': {
           alias: 'd',
           describe: 'Path to the templates folder',

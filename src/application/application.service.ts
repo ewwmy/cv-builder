@@ -10,6 +10,7 @@ import { ArgumentsService } from '../arguments/arguments.service'
 import { IPuppeteerPdfOutput } from '../output/puppeteer-pdf-output.interface'
 import { JsonTransformerService } from '../json-transformer/json-transformer.service'
 import { FileService } from '../files/file.service'
+import chokidar from 'chokidar'
 
 @injectable()
 export class ApplicationService {
@@ -125,70 +126,102 @@ export class ApplicationService {
       // load command line options
       const options = await this.args.getCommandLineOptions()
 
-      // registering handlebars helpers
-      this.templateEngine.registerHelpers()
+      // generate all wrapper
+      const generateAll = async () => {
+        // registering handlebars helpers
+        this.templateEngine.registerHelpers()
 
-      // restore default data if the option `restore` is set
-      if (options.restore) {
-        await this.restoreDefault(options.force)
-        this.logger.info('Restored' + (options.force ? ' (force)' : ''))
-        process.exit(0)
+        // restore default data if the option `restore` is set
+        if (options.restore) {
+          await this.restoreDefault(options.force)
+          this.logger.info('Restored' + (options.force ? ' (force)' : ''))
+          process.exit(0)
+        }
+
+        // load cv json file data
+        const cvData = await this.getSourceData(options.input)
+        if (!cvData) return
+
+        // process icons and images + remove hidden data
+        const processedCvData = await this.jsonTransformer.processImages(
+          await this.jsonTransformer.processIcons(
+            this.jsonTransformer.processHiddenData(cvData),
+            options.iconsBaseDir,
+          ),
+          options.imagesBaseDir,
+        )
+
+        // walk through selected templates
+        for (const template of options.templates) {
+          // look for the template and read it if found
+          const templateData = await this.fileService.readFileData(
+            join(options.templatesDir, `${template}.hbs`),
+          )
+          if (!templateData) continue
+
+          // walk through selected locales
+          for (const locale of options.locales) {
+            // register handlebars date helper depending on the locale
+            this.templateEngine.registerDateHelper(locale)
+
+            // determine language from the processing locale
+            const lang = String(locale).split('-')[0]
+
+            // setting up the output pdf file path
+            const outputPath = join(options.output, `${template}_${locale}.pdf`)
+
+            // language-mapped json data
+            const localizedCvData = this.jsonTransformer.processLocalizedData(
+              processedCvData,
+              lang,
+            )
+
+            // compile html
+            const html = this.templateEngine.compile(
+              templateData,
+              localizedCvData,
+            )
+
+            // save pdf
+            await this.output.saveToFile(
+              outputPath,
+              html,
+              this.args.marginsToPuppeteer(options.margins),
+            )
+
+            // unregistering handlebars date helper
+            this.templateEngine.unregisterDateHelper()
+          }
+        }
       }
 
-      // load cv json file data
-      const cvData = await this.getSourceData(options.input)
-      if (!cvData) return
+      // generate all pdfs according to the options
+      await generateAll()
 
-      // process icons and images + remove hidden data
-      const processedCvData = await this.jsonTransformer.processImages(
-        await this.jsonTransformer.processIcons(
-          this.jsonTransformer.processHiddenData(cvData),
-          options.iconsBaseDir,
-        ),
-        options.imagesBaseDir,
-      )
+      // check if the watch mode is enabled
+      if (options.watch) {
+        this.logger.info('Watching for changes...')
 
-      // walk through selected templates
-      for (const template of options.templates) {
-        // look for the template and read it if found
-        const templateData = await this.fileService.readFileData(
-          join(options.templatesDir, `${template}.hbs`),
-        )
-        if (!templateData) continue
+        // register file watcher
+        const watcher = chokidar.watch([options.input, options.templatesDir], {
+          ignoreInitial: true,
+          persistent: true,
+        })
 
-        // walk through selected locales
-        for (const locale of options.locales) {
-          // register handlebars date helper depending on the locale
-          this.templateEngine.registerDateHelper(locale)
-
-          // determine language from the processing locale
-          const lang = String(locale).split('-')[0]
-
-          // setting up the output pdf file path
-          const outputPath = join(options.output, `${template}_${locale}.pdf`)
-
-          // language-mapped json data
-          const localizedCvData = this.jsonTransformer.processLocalizedData(
-            processedCvData,
-            lang,
-          )
-
-          // compile html
-          const html = this.templateEngine.compile(
-            templateData,
-            localizedCvData,
-          )
-
-          // save pdf
-          await this.output.saveToFile(
-            outputPath,
-            html,
-            this.args.marginsToPuppeteer(options.margins),
-          )
-
-          // unregistering handlebars date helper
-          this.templateEngine.unregisterDateHelper()
-        }
+        // handle files changes
+        watcher.on('change', async (filePath) => {
+          this.logger.info(`File changed: "${filePath}". Regenerating...`)
+          try {
+            // regenerate on files change
+            await generateAll()
+          } catch (error) {
+            let errorInfo = 'Error while regenerating'
+            if (error instanceof Error) {
+              errorInfo += ': ' + error.message
+            }
+            this.logger.error(errorInfo)
+          }
+        })
       }
     } catch (error) {
       if (error instanceof Error) {
