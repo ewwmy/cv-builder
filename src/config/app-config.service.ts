@@ -143,7 +143,7 @@ export class AppConfigService implements IAppConfigService {
       result = JSON.parse(data ?? '{}')
     } catch (error) {
       if (error instanceof Error) {
-        error.message = `Error: Cannot parse JSON from user config file. Details: ${error?.message}`
+        error.message = `Cannot parse JSON in user config file: ${error.message}`
       }
       throw error
     }

@@ -1,6 +1,6 @@
 {
   "name": "@ewwmy/cv-builder",
-  "version": "2.0.11",
+  "version": "2.1.0",
   "private": false,
   "type": "commonjs",
   "engines": {
@@ -46,6 +46,7 @@
   "license": "MIT",
   "description": "💻 A CLI utility to generate a well-formatted CV in PDF format 📕 based on JSON CV data and a Handlebars template",
   "dependencies": {
+    "chokidar": "^4.0.3",
     "fs-extra": "^11.2.0",
     "handlebars": "^4.7.8",
     "inversify": "^6.2.1",

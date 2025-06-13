@@ -10,6 +10,7 @@
 - `puppeteer` to generate PDFs
 - `sharp` to preload and process images
 - `yargs` to manage and process command-line arguments conveniently
+- `chokidar` to provide file watching
 - `tslog` to make logging more pretty and functional
 - `inversify` to handle dependency injection and improve code modularity.
 
@@ -114,6 +115,7 @@ Main command-line options:
 - `-i`, `--input`: path to the JSON file with the data of your CV (e.g., `-i /home/user/my-cv.json`)
 - `-o`, `--output`: directory for the built PDF files (e.g., `-o /home/user/my-cv`)
 - `-d`, `--templates-dir`: directory for the templates (e.g., `-o /home/user/my-cv-templates`)
+- `-w`, `--watch`: watch the CV JSON file and the templates directory for changes and rebuild PDFs when it changes (for live updates)
 
 Command-line options override settings defined in `settings/settings.json`. For detailed information about the configuration, please refer to the **Default Configuration** section.
 
@@ -160,6 +162,10 @@ Please, refer to the [Handlebars Guide](https://handlebarsjs.com/guide/) for mor
 You can create as many templates as needed. Template files must have the `.hbs` extension. Specify templates you need to generate PDF with in the `TEMPLATES` setting or via command-line options. Similarly, the directory for templates can be configured via the `TEMPLATES_DIR` setting or command-line options.
 
 > Note: The options provided via command-line override the options from the `settings/settings.json` configuration file.
+
+### Watch Mode
+
+The `-w` (`--watch`) option can be used to watch the CV JSON file and the templates directory for changes and rebuild PDFs when they change. This is useful for live updates (e.g., to develop templates, or to monitor changes in the JSON data).
 
 ### Features
 
