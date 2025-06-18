@@ -6,5 +6,7 @@ export interface IHandlebarsService extends ITemplateService {
   unregisterHelpers: () => void
   registerDateHelper: (locale: string) => void
   unregisterDateHelper: () => void
+  registerYearHelper: (locale: string) => void
+  unregisterYearHelper: () => void
   compile: (template: string, data: JsonValue) => string
 }

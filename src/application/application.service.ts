@@ -164,6 +164,9 @@ export class ApplicationService {
             // register handlebars date helper depending on the locale
             this.templateEngine.registerDateHelper(locale)
 
+            // register handlebars year helper depending on the locale
+            this.templateEngine.registerYearHelper(locale)
+
             // determine language from the processing locale
             const lang = String(locale).split('-')[0]
 
@@ -191,6 +194,9 @@ export class ApplicationService {
 
             // unregistering handlebars date helper
             this.templateEngine.unregisterDateHelper()
+
+            // unregistering handlebars year helper
+            this.templateEngine.unregisterYearHelper()
           }
         }
       }

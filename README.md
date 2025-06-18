@@ -268,7 +268,7 @@ The locale determines which translation is used. If you have 2 translations in y
 
 #### Date Formatting
 
-Dates are formatted based on the specified locale. Use the `{{date}}` helper for pretty printing.
+Dates are formatted based on the specified locale. Use the `{{date}}` helper for pretty printing (year and month). Use the `{{year}}` helper to extract the year only from a date.
 
 ##### JSON Example
 
@@ -282,8 +282,16 @@ The date must be in `YYYY-MM-DD` format.
 
 ##### Template Usage
 
+Typical date:
+
 ```handlebars
 {{date startedAt}}
+```
+
+Year only:
+
+```handlebars
+{{year startedAt}}
 ```
 
 #### Hidden Items
