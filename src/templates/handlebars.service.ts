@@ -53,9 +53,9 @@ export class HandlebarsService implements IHandlebarsService {
         return ''
       }
 
-      const roundness = opt.hash.roundness || 0
-      const width = opt.hash.width || '100px'
-      const height = opt.hash.height || width
+      const roundness = opt?.hash?.roundness || 0
+      const width = opt?.hash?.width || '100px'
+      const height = opt?.hash?.height || width
 
       return new Handlebars.SafeString(`
           <div style="
@@ -74,21 +74,47 @@ export class HandlebarsService implements IHandlebarsService {
     })
   }
 
-  // handlebars: register `date` helper
-  public registerDateHelper(locale: string): void {
-    Handlebars.registerHelper('date', (text) => {
+  // date formatter function
+  protected getDateFormatter(
+    locale: string,
+    options: Intl.DateTimeFormatOptions,
+  ) {
+    return (text: string) => {
       const date = new Date(text)
       return new Handlebars.SafeString(
-        new Intl.DateTimeFormat(locale, {
-          year: 'numeric',
-          month: 'short',
-        }).format(date),
+        new Intl.DateTimeFormat(locale, options).format(date),
       )
-    })
+    }
+  }
+
+  // handlebars: register `date` helper
+  public registerDateHelper(locale: string): void {
+    Handlebars.registerHelper(
+      'date',
+      this.getDateFormatter(locale, {
+        year: 'numeric',
+        month: 'short',
+      }),
+    )
+  }
+
+  // handlebars: register `year` helper to extract the year from a date
+  public registerYearHelper(locale: string): void {
+    Handlebars.registerHelper(
+      'year',
+      this.getDateFormatter(locale, {
+        year: 'numeric',
+      }),
+    )
   }
 
   // handlebars: unregister `date` helper
   public unregisterDateHelper() {
     Handlebars.unregisterHelper('date')
+  }
+
+  // handlebars: unregister `year` helper
+  public unregisterYearHelper() {
+    Handlebars.unregisterHelper('year')
   }
 }
