@@ -169,6 +169,37 @@ The `-w` (`--watch`) option can be used to watch the CV JSON file and the templa
 
 ### Features
 
+#### Logical Expressions
+
+You can use additional logical operators, such as `eq`, `ne`, `lt`, `gt`, `lte`, `gte`, `and`, `or` to make your templates much more flexible:
+
+- `{{#if (eq foo "bar")}}` → `if (foo === "bar")`
+- `{{#if (ne foo "bar")}}` → `if (foo !== "bar")`
+- `{{#if (lt foo 3)}}` → `if (foo < 3)`
+- `{{#if (gt foo 3)}}` → `if (foo > 3)`
+- `{{#if (lte foo 3)}}` → `if (foo <= 3)`
+- `{{#if (gte foo 3)}}` → `if (foo >= 3)`
+- `{{#if (and (eq foo "bar") (lt baz 10))}}` → `if (foo === "bar" && baz < 10)`
+- `{{#if (or (eq foo "bar") (lt baz 10))}}` → `if (foo === "bar" || baz < 10)`
+
+##### Template Usage
+
+The `content` will only show if either `section1` or `section2` is present:
+
+```handlebars
+{{#if (or section1 section2)}}
+  {{content}}
+{{/if}}
+```
+
+The `content` will only show if either `section1 === "foo"` or `section2 !== "bar"`:
+
+```handlebars
+{{#if (or (eq section1 "foo") (ne section2 "bar"))}}
+  {{content}}
+{{/if}}
+```
+
 #### Markdown Support
 
 You can use Markdown anywhere in your JSON data. To render Markdown in templates, use the `{{markdown}}` helper.

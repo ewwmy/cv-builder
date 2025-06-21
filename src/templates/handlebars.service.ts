@@ -9,7 +9,9 @@ import { IHandlebarsService } from './handlebars.service.interface'
 export class HandlebarsService implements IHandlebarsService {
   public constructor(
     @inject(DependencyTypes.Markdown) private markdown: MarkdownService,
-  ) {}
+  ) {
+    this.registerLogicalHelpers()
+  }
 
   public registerHelpers(): void {
     this.registerMarkdownHelper()
@@ -30,6 +32,27 @@ export class HandlebarsService implements IHandlebarsService {
         data,
       })
     }
+  }
+
+  protected registerLogicalHelpers(): void {
+    Handlebars.registerHelper({
+      eq: (v1, v2) => v1 === v2,
+      ne: (v1, v2) => v1 !== v2,
+      lt: (v1, v2) => v1 < v2,
+      gt: (v1, v2) => v1 > v2,
+      lte: (v1, v2) => v1 <= v2,
+      gte: (v1, v2) => v1 >= v2,
+      and() {
+        return Array.prototype.slice
+          .call(arguments, 0, arguments.length - 1)
+          .every(Boolean)
+      },
+      or() {
+        return Array.prototype.slice
+          .call(arguments, 0, arguments.length - 1)
+          .some(Boolean)
+      },
+    })
   }
 
   // handlebars: register `markdown` helper
