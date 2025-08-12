@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>CV — {{{data.name}}} — {{{data.headline.backend-go}}}</title>
+  <style>
+    /* Reset */
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      font: inherit;
+      vertical-align: baseline;
+    }
+
+    html, body {
+      width: 210mm;
+      height: 297mm;
+      font-family: sans-serif;
+      background: white;
+      color: black;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+
+      display: flex;
+      flex-direction: column;
+
+      align-items: flex-start;
+      justify-content: flex-start;
+
+      font-size: 10pt;
+      line-height: 1.2;
+    }
+
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
+    /* Additional */
+
+    .page {
+      width: 100%;
+      height: 100%;
+      padding: 5mm 10mm;
+      position: relative;
+    }
+
+    h1, h2, h3, h4 {
+      font-weight: bold;
+    }
+
+    h2 {
+      text-transform: uppercase;
+      margin-bottom: 2pt;
+    }
+
+    /* Recover */
+
+    strong, b {
+      font-weight: bold;
+    }
+
+    em, i {
+      font-style: italic;
+    }
+
+    u {
+      text-decoration: underline;
+    }
+
+    code, pre, kbd, samp {
+      font-family: monospace;
+      font-size: 1em;
+    }
+
+    sub {
+      vertical-align: sub;
+      font-size: 75%;
+    }
+
+    sup {
+      vertical-align: super;
+      font-size: 75%;
+    }
+
+    /* Header */
+
+    h1 {
+      font-size: 1.3em;
+      text-align: center;
+      margin-bottom: 2pt;
+    }
+
+    .position {
+      font-weight: bold;
+      font-size: 1.1em;
+      text-align: center;
+      margin-bottom: 2pt;
+    }
+
+    .contact-info {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2pt;
+      margin-bottom: 12pt;
+    }
+
+    .contact-info a {
+      text-decoration: underline;
+      color: black;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2pt;
+    }
+
+    .contact-item:not(:first-child)::before {
+      content: "|";
+      margin: 0 2pt;
+    }
+
+    .contact-item svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Summary, Skills */
+
+    section {
+      margin-bottom: 12pt;
+    }
+
+    section h2 {
+      border-bottom: 2px solid black;
+      margin-bottom: 12pt;
+    }
+
+    section.simple h2 {
+      display: inline;
+      border: none;
+      margin-bottom: 2pt;
+    }
+
+    section.simple h2+p {
+      display: inline;
+    }
+
+    /* Sections */
+
+    article {
+      margin-bottom: 6pt;
+    }
+
+    article .headline {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    h3 {
+      /* margin-bottom: 2pt; */
+    }
+
+    p.about {
+      font-style: italic;
+      margin-bottom: 2pt;
+    }
+
+    h3>span {
+      font-weight: normal;
+    }
+
+    h4 {
+      font-style: italic;
+      padding-left: 1.1em;
+      margin-bottom: 2pt;
+    }
+
+    ul {
+      padding-left: 2.2em;
+      /* list-style-position: inside; */
+    }
+
+    /* Multi-page */
+
+    .page-break {
+      page-break-before: always;
+    }
+  </style>
+</head>
+<body>
+  <div class="page page-break">
+    <header>
+      <h1 class="name">{{data.name}}</h1>
+      <p class="position">{{data.headline.backend-go}}</p>
+      <div class="contact-info">
+        {{#each data.contacts}}
+          <div class="contact-item">
+            {{{icon}}}
+            {{#if markdown}}
+              {{markdown value}}
+            {{else}}
+              {{value}}
+            {{/if}}
+          </div>
+        {{/each}}
+      </p>
+    </header>
+
+    <main>
+
+      {{#if data.about}}
+        <section class="simple">
+          <h2>{{metadata.translations.about}}:</h2>
+          <p>{{markdown data.about}}</p>
+        </section>
+      {{/if}}
+
+      {{#if data.skills.hard}}
+        <section class="simple">
+          <h2>{{metadata.translations.hardSkills}}:</h2>
+          <p>
+            {{#each data.skills.hard}}
+              {{#if @last}}
+                {{this}}.
+              {{else}}
+                {{this}}, 
+              {{/if}}
+            {{/each}}</p>
+        </section>
+      {{/if}}
+
+      {{#if data.experience}}
+        <section>
+          <h2>{{metadata.translations.professionalExperience}}</h2>
+          {{#each data.experience}}
+            <article>
+              <div class="headline">
+                <h3>
+                  {{name}}
+                  {{#if period.from}}
+                    <span>
+                      ({{date period.from}}
+                      {{#if period.to}}
+                        — {{date period.to}})
+                      {{else}}
+                        — {{../metadata.translations.present}})
+                      {{/if}}
+                    </span>
+                    {{#if (lt @index 3)}}
+                    {{else}}
+                      — <em>{{headline}}</em>
+                    {{/if}}
+                  {{/if}}
+                </h3>
+                <div class="right">
+                  {{#if city}}
+                    <span>{{city}}, </span>
+                  {{/if}}
+                  {{#if country}}
+                    <span>{{country}}</span>
+                  {{/if}}
+                  {{#if type}}
+                    <span>({{type}})</span>
+                  {{/if}}
+                </div>
+              </div>
+              {{#if (lt @index 3)}}
+                <p class="about">
+                  {{about}}
+                </p>
+                <h4>
+                  {{headline}}
+                </h4>
+                <ul>
+                  {{#each achievements}}
+                    <li>{{markdown this}}</li>
+                  {{/each}}
+                </ul>
+              {{else}}
+              {{/if}}
+            </article>
+          {{/each}}
+        </section>
+      {{/if}}
+
+      {{#if data.courses}}
+        <section>
+          <h2>{{metadata.translations.courses}}</h2>
+          {{#each data.courses}}
+            <article>
+              <div class="headline">
+                <h3>
+                  {{name}}
+                  {{#if period.from}}
+                    <span>
+                      ({{date period.from}}
+                      {{#if period.to}}
+                        — {{date period.to}})
+                      {{else}}
+                        — {{../metadata.translations.present}})
+                      {{/if}}
+                    </span>
+                  {{/if}}
+                </h3>
+                <div class="right">
+                  {{#if city}}
+                    <span>{{city}}, </span>
+                  {{/if}}
+                  {{#if country}}
+                    <span>{{country}}</span>
+                  {{/if}}
+                  {{#if type}}
+                    <span>({{type}})</span>
+                  {{/if}}
+                </div>
+              </div>
+              <p class="about">
+                {{company}} — {{about}}
+              </p>
+            </article>
+          {{/each}}
+        </section>
+      {{/if}}
+
+      {{#if data.certificates}}
+        <section>
+          <h2>{{metadata.translations.certificates}}</h2>
+          {{#each data.certificates}}
+            {{#if @first}}
+            <article>
+              <div class="headline">
+                <h3>
+                  {{name}}
+                  {{#if issuedAt}}
+                    <span>
+                      ({{date issuedAt}})
+                    </span>
+                  {{/if}}
+                </h3>
+                <div class="right">
+                </div>
+              </div>
+            </article>
+            {{/if}}
+          {{/each}}
+        </section>
+      {{/if}}
+
+      {{#if data.education}}
+        <section>
+          <h2>{{metadata.translations.education}}</h2>
+          {{#each data.education}}
+            <article>
+              <div class="headline">
+                <h3>
+                  {{name}}
+                  {{#if period.from}}
+                    <span>
+                      ({{date period.from}}
+                      {{#if period.to}}
+                        — {{date period.to}})
+                      {{else}}
+                        — {{../metadata.translations.present}})
+                      {{/if}}
+                    </span>
+                  {{/if}}
+                </h3>
+                <div class="right">
+                  {{#if city}}
+                    <span>{{city}}, </span>
+                  {{/if}}
+                  {{#if country}}
+                    <span>{{country}}</span>
+                  {{/if}}
+                  {{#if type}}
+                    <span>({{type}})</span>
+                  {{/if}}
+                </div>
+              </div>
+              <p>
+                {{degree}} — {{faculty}}
+              </p>
+            </article>
+          {{/each}}
+        </section>
+      {{/if}}
+
+      {{#if data.languages}}
+        <section class="simple">
+          <h2>{{metadata.translations.languages}}:</h2>
+          <p>
+            {{#each data.languages}}
+              {{name}} — {{level}}{{#if @last}}.{{else}},{{/if}}
+            {{/each}}
+          </p>
+        </section>
+      {{/if}}
+
+    </main>
+  </div>
+</body>
+</html>

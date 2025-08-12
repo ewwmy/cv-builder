@@ -78,7 +78,7 @@ export class ArgumentsService {
         restore: {
           alias: 'r',
           describe:
-            'Restore sample data, preserving existing files !!! CAUTION: If the `--force` option given,     existing configuration, CV file `cv-example.json`, template `example.hbs`, image `example-user-photo.jpg` WILL BE OVERWRITTEN !!!',
+            'Restore sample data, preserving existing files !!! CAUTION: If the `--force` option given,     existing configuration, CV file `cv-example.json`, template `default.hbs`, image `example-user-photo.jpg` WILL BE OVERWRITTEN !!!',
           requiresArg: false,
           default: false,
           type: 'boolean',

@@ -93,7 +93,7 @@ export class AppConfigService implements IAppConfigService {
 
     this.data.DEFAULT_USER_CONFIG = {
       LOCALES: ['en-US', 'ru-RU'],
-      TEMPLATES: ['example'],
+      TEMPLATES: ['default', 'international-strict'],
       INPUT_CV_FILE_PATH: this.data.DEFAULT_CV_FILE_PATH,
       OUTPUT_DIR: this.data.DEFAULT_OUTPUT_DIR,
       TEMPLATES_DIR: this.data.DEFAULT_TEMPLATES_DIR,

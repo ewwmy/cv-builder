@@ -7,15 +7,19 @@
       },
       "about": {
         "ru": "Обо мне",
-        "en": "Professional Profile"
+        "en": "Summary"
       },
       "experience": {
         "ru": "Опыт работы",
         "en": "Work Experience"
       },
+      "professionalExperience": {
+        "ru": "Опыт работы",
+        "en": "Professional Experience"
+      },
       "hardSkills": {
         "ru": "Навыки",
-        "en": "Hard Skills"
+        "en": "Skills"
       },
       "softSkills": {
         "ru": "Гибкие навыки",
@@ -44,6 +48,54 @@
       "languages": {
         "ru": "Знание языков",
         "en": "Languages"
+      },
+      "timeTypes": {
+        "full-time": {
+          "ru": "Полная занятость",
+          "en": "Full-time"
+        },
+        "part-time": {
+          "ru": "Частичная занятость",
+          "en": "Part-time"
+        },
+        "project": {
+          "ru": "Проектная работа",
+          "en": "Project-based"
+        },
+        "freelance": {
+          "ru": "Фриланс",
+          "en": "Freelance"
+        },
+        "internship": {
+          "ru": "Стажировка",
+          "en": "Internship"
+        },
+        "contract": {
+          "ru": "Контракт",
+          "en": "Contract"
+        }
+      },
+      "workTypes": {
+        "on-site": {
+          "ru": "Офис",
+          "en": "On-site"
+        },
+        "remote": {
+          "ru": "Удалённо",
+          "en": "Remote"
+        },
+        "hybrid": {
+          "ru": "Гибрид",
+          "en": "Hybrid"
+        },
+        "relocation": {
+          "ru": "Релокация",
+          "en": "Relocation"
+        }
+      },
+      "present": {
+        "ru": "настоящее время",
+        "en": "Present"
       }
     }
   },
@@ -538,7 +590,7 @@
           "ru": "Национальный исследовательский университет ИТМО",
           "en": "ITMO University"
         },
-        "coutry": {
+        "country": {
           "ru": "Россия",
           "en": "Russia"
         },
@@ -564,7 +616,7 @@
           "ru": "Московский государственный технический университет (МГТУ)",
           "en": "Moscow State Technical University (MSTU)"
         },
-        "coutry": {
+        "country": {
           "ru": "Россия",
           "en": "Russia"
         },

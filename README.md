@@ -133,7 +133,7 @@ cv-builder --restore --force
 
 ### Default Configuration
 
-> Default settings file: `~/.config/ewwmy/cv-builder/settings/settings.json`. You should not move or rename it.
+> Default settings file: `~/.config/ewwmy/cv-builder/settings/settings.json`. You should **not** move or rename it.
 
 These are configuration options and their corresponding command-line options:
 
@@ -155,11 +155,16 @@ You can create any structure, use any valid JSON data, but some field names are 
 
 ### Templates
 
-CV Builder uses the Handlebars template engine and includes an example template at `~/.config/ewwmy/cv-builder/templates/example.hbs`.
+CV Builder uses the [Handlebars](https://handlebarsjs.com/) template engine and includes a couple of templates out of the box:
 
-Please, refer to the [Handlebars Guide](https://handlebarsjs.com/guide/) for more information on using Handlebars.
+- `default.hbs` — a basic template that demonstrates most of the features.
+- `international-strict.hbs` — a template which is considered one of the best for IT specialists in 2025 (looks similar to well-known [Jake's Resume](https://www.overleaf.com/latex/templates/jakes-resume/syzfjbzwjncs)).
+
+By default they're both on. Default location of the templates: `~/.config/ewwmy/cv-builder/templates`.
 
 You can create as many templates as needed. Template files must have the `.hbs` extension. Specify templates you need to generate PDF with in the `TEMPLATES` setting or via command-line options. Similarly, the directory for templates can be configured via the `TEMPLATES_DIR` setting or command-line options.
+
+Please, refer to the [Handlebars Guide](https://handlebarsjs.com/guide/) for more information on using Handlebars.
 
 > Note: The options provided via command-line override the options from the `settings/settings.json` configuration file.
 
@@ -198,6 +203,30 @@ The `content` will only show if either `section1 === "foo"` or `section2 !== "ba
 {{#if (or (eq section1 "foo") (ne section2 "bar"))}}
   {{content}}
 {{/if}}
+```
+
+##### Practical Example
+
+```handlebars
+{{#each data.experience}}
+  {{#if (lt @index 3)}}
+    {{!-- Show only 3 latest jobs --}}
+  {{/if}}
+{{/each}}
+```
+
+#### First and Last items
+
+You can use `@first` and `@last` aliases in templates to refer the first and the last array elements accordingly.
+
+##### Example
+
+```handlebars
+{{#each data.certificates}}
+  {{#if @first}}
+    {{!-- Show the latest certificate only --}}
+  {{/if}}
+{{/each}}
 ```
 
 #### Markdown Support
